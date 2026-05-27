@@ -1,0 +1,374 @@
+// ============================================
+// GLOBAL STYLES - Reset y Estilos Base Globales
+// ============================================
+// Este archivo contiene estilos globales que aplican a TODO el proyecto
+
+@use '../config/variables' as *;
+@use '../config/typography' as typography;
+@use '../config/breakpoints' as *;
+
+// ============================================
+// RESET Y NORMALIZE (HTML5)
+// ============================================
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; // Espacio para navbar fijo
+  
+  @include prefer-dark {
+    color-scheme: dark;
+  }
+}
+
+body {
+  background: linear-gradient(135deg, $color-bg-primary 0%, $color-bg-secondary 50%, $color-bg-primary 100%);
+  color: $color-text-primary;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  letter-spacing: $letter-spacing-normal;
+  min-height: 100vh;
+  
+  // Antialiasing para text rendering más suave
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  // Previene scrollbar layout shift
+  scrollbar-gutter: stable;
+  
+  @include reduce-motion {
+    scroll-behavior: auto;
+  }
+}
+
+// ============================================
+// MEJORAS DE ACCESIBILIDAD
+// ============================================
+
+:focus-visible {
+  @include typography.focus-visible;
+}
+
+// Skip to main content (accesibilidad)
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: $color-brand-primary;
+  color: #000;
+  padding: $space-sm $space-md;
+  text-decoration: none;
+  z-index: 100;
+  
+  &:focus {
+    top: 0;
+  }
+}
+
+// ============================================
+// TIPOGRAFÍA BASE
+// ============================================
+
+h1 {
+  @include typography.heading($font-size-2xl, 700);
+}
+
+h2 {
+  @include typography.heading($font-size-xl, 700);
+}
+
+h3 {
+  @include typography.heading($font-size-large, 600);
+}
+
+h4,
+h5,
+h6 {
+  @include typography.heading($font-size-base, 600);
+}
+
+p {
+  margin-bottom: $space-md;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+strong {
+  font-weight: 600;
+  color: $color-text-primary;
+}
+
+em {
+  font-style: italic;
+}
+
+small {
+  font-size: $font-size-small;
+  color: $color-text-secondary;
+}
+
+// ============================================
+// ELEMENTOS INLINE
+// ============================================
+
+a {
+  color: $color-brand-primary;
+  text-decoration: none;
+  @include typography.transition(color);
+  
+  &:hover,
+  &:focus-visible {
+    color: $color-brand-secondary;
+    text-decoration: underline;
+  }
+  
+  &:visited {
+    color: darken-modern($color-brand-primary, 15%);
+  }
+}
+
+code,
+pre {
+  font-family: $font-family-mono;
+  font-size: $font-size-small;
+  background-color: $color-surface-base;
+  color: $color-text-primary;
+}
+
+code {
+  padding: 0.2em 0.4em;
+  border-radius: $radius-sm;
+}
+
+pre {
+  overflow-x: auto;
+  padding: $space-md;
+  border-radius: $radius-md;
+  border: 1px solid $color-border-secondary;
+  
+  code {
+    background-color: transparent;
+    padding: 0;
+  }
+}
+
+// ============================================
+// LISTAS
+// ============================================
+
+ul,
+ol {
+  margin-bottom: $space-md;
+  padding-left: $space-lg;
+  
+  li {
+    margin-bottom: $space-sm;
+  }
+  
+  li:last-child {
+    margin-bottom: 0;
+  }
+}
+
+dl {
+  margin-bottom: $space-md;
+  
+  dt {
+    font-weight: 600;
+    margin-top: $space-md;
+    margin-bottom: $space-xs;
+  }
+  
+  dd {
+    margin-left: $space-lg;
+    margin-bottom: $space-md;
+  }
+}
+
+// ============================================
+// TABLAS
+// ============================================
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: $space-md;
+  
+  th,
+  td {
+    padding: $space-md;
+    text-align: left;
+    border-bottom: 1px solid $color-border-primary;
+  }
+  
+  th {
+    background-color: $color-surface-hover;
+    color: $color-brand-primary;
+    font-weight: 600;
+  }
+  
+  tbody tr {
+    @include typography.transition(background-color);
+    
+    &:hover {
+      background-color: $color-surface-hover;
+    }
+  }
+}
+
+// ============================================
+// BLOCKQUOTE E CITAS
+// ============================================
+
+blockquote {
+  margin: $space-md 0;
+  padding: 0 $space-lg;
+  border-left: 3px solid $color-brand-primary;
+  color: $color-text-secondary;
+  font-style: italic;
+}
+
+// ============================================
+// HORIZONTAL RULE
+// ============================================
+
+hr {
+  border: none;
+  border-top: 1px solid $color-border-primary;
+  margin: $space-lg 0;
+}
+
+// ============================================
+// FORMULARIOS - MEJORAS
+// ============================================
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: $color-text-tertiary;
+}
+
+// Estados de focus con Dart Sass moderno
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: $color-brand-primary;
+  box-shadow: 0 0 0 3px color-mix(in srgb, $color-brand-primary 10%, transparent);
+}
+
+// ============================================
+// IMÁGENES
+// ============================================
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  
+  &[loading='lazy'] {
+    background-color: $color-surface-base;
+  }
+}
+
+picture {
+  display: contents;
+}
+
+// ============================================
+// SVGS
+// ============================================
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+// ============================================
+// CONTENEDORES PRINCIPALES
+// ============================================
+
+main {
+  min-height: calc(100vh - 200px); // Espacio para navbar + footer
+}
+
+article,
+aside,
+section {
+  display: block;
+}
+
+// ============================================
+// ESTILOS DE IMPRESIÓN (@media print)
+// ============================================
+
+@media print {
+  html,
+  body {
+    background: #fff;
+    color: #000;
+  }
+  
+  a,
+  a:visited {
+    color: #00e;
+    text-decoration: underline;
+  }
+  
+  img {
+    max-width: 100%;
+  }
+  
+  p,
+  blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+
+// ============================================
+// SCROLL BEHAVIOR
+// ============================================
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-brand-primary;
+  border-radius: $radius-full;
+  
+  &:hover {
+    background: $color-brand-secondary;
+  }
+}
+
+// Firefox
+* {
+  scrollbar-color: $color-brand-primary transparent;
+  scrollbar-width: thin;
+}

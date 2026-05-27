@@ -1,0 +1,129 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { apiUrl } from '../../services/api';
+
+let users: any[] = [];
+let total = 0;
+
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+const token = Astro.cookies.get('token')?.value;
+
+try {
+  const res = await fetch(apiUrl(`/users?page=${page}&limit=20`), {
+    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+  });
+  if (res.ok) {
+    const data = await res.json();
+    users = data.data || [];
+    total = data.meta?.total || 0;
+  }
+} catch (e) {
+  console.error('Error fetching users:', e);
+}
+---
+
+<AdminLayout title="Gestión de Usuarios">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-4">👥 Gestión de Usuarios</h2>
+    </div>
+    <div class="level-right">
+      <span class="tag is-info">{total} usuarios</span>
+    </div>
+  </div>
+
+  <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+    <div class="table-container">
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Registro</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => (
+            <tr data-user-id={user.id}>
+              <td>
+                <div class="is-flex is-align-items-center">
+                  <div class="avatar mr-2" style="width: 32px; height: 32px; border-radius: 50%; background: #6c5ce7; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                    {user.username.charAt(0).toUpperCase()}
+                  </div>
+                  <span class="has-text-weight-medium">{user.username}</span>
+                </div>
+              </td>
+              <td>{user.email}</td>
+              <td>
+                <span class={`tag ${user.role === 'admin' ? 'is-danger' : 'is-info'}`}>
+                  {user.role}
+                </span>
+              </td>
+              <td>
+                <span class={`tag ${user.isActive ? 'is-success' : 'is-warning'}`}>
+                  {user.isActive ? 'Activo' : 'Inactivo'}
+                </span>
+              </td>
+              <td>{new Date(user.createdAt).toLocaleDateString('es-ES')}</td>
+              <td>
+                <div class="buttons are-small">
+                  <button class="button is-warning toggle-role-btn" data-id={user.id} data-role={user.role}>
+                    {user.role === 'admin' ? '👤 User' : '⚙️ Admin'}
+                  </button>
+                  <button class="button is-info toggle-active-btn" data-id={user.id}>
+                    {user.isActive ? '🔴 Desactivar' : '🟢 Activar'}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {users.length === 0 && (
+      <div class="has-text-centered py-5">
+        <p class="has-text-grey">No hay usuarios registrados.</p>
+      </div>
+    )}
+  </div>
+
+  <script>
+    import { userApi } from '../../services/api';
+
+    // Toggle role
+    document.querySelectorAll('.toggle-role-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const currentRole = btn.getAttribute('data-role');
+        const newRole = currentRole === 'admin' ? 'user' : 'admin';
+
+        try {
+          await userApi.updateRole(id!, newRole);
+          window.location.reload();
+        } catch (err) {
+          alert('Error al actualizar rol');
+        }
+      });
+    });
+
+    // Toggle active
+    document.querySelectorAll('.toggle-active-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+
+        try {
+          await userApi.toggleActive(id!);
+          window.location.reload();
+        } catch (err) {
+          alert('Error al cambiar estado');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

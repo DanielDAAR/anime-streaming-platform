@@ -1,0 +1,79 @@
+---
+import '../styles/index.scss';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+}
+
+const { 
+  title = 'AnimeStream - Tu plataforma de anime',
+  description = 'Descubre los mejores animes, episodios y series en AnimeStream. Plataforma moderna de streaming con contenido embebido.',
+  image = '/images/og-default.jpg',
+  canonical = Astro.url.pathname
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString() || 'http://localhost:4321';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="keywords" content="anime, streaming, episodios, series anime, ver anime online" />
+  <meta name="author" content="AnimeStream" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={`${siteUrl}${canonical}`} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={`${siteUrl}${image}`} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${image}`} />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href={`${siteUrl}${canonical}`} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <title>{title}</title>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AnimeStream",
+    "url": siteUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${siteUrl}/buscar?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  })} />
+</head>
+<body>
+  <slot />
+
+  <script>
+    // Client-side auth check
+    import { authService } from '../services/auth';
+
+    // Make auth available globally for islands
+    window.authService = authService;
+  </script>
+</body>
+</html>

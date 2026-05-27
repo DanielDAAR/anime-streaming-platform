@@ -1,0 +1,146 @@
+---
+export const prerender = true;
+
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import AnimeCard from '../components/AnimeCard.astro';
+import { apiUrl } from '../services/api';
+
+let latestAnimes: any[] = [];
+let topRatedAnimes: any[] = [];
+
+// Fetch data at build time (SSR)
+try {
+  const [latestRes, topRatedRes] = await Promise.all([
+    fetch(apiUrl('/animes/latest?limit=8')),
+    fetch(apiUrl('/animes/top-rated?limit=8'))
+  ]);
+
+  if (latestRes.ok) {
+    const data = await latestRes.json();
+    latestAnimes = data.data || [];
+  }
+  if (topRatedRes.ok) {
+    const data = await topRatedRes.json();
+    topRatedAnimes = data.data || [];
+  }
+} catch (e) {
+  console.error('Error fetching home data:', e);
+}
+---
+
+<MainLayout 
+  title="AnimeStream - Descubre los Mejores Animes"
+  description="Plataforma moderna para descubrir y seguir tus animes favoritos. Episodios actualizados diariamente."
+  canonical="/"
+>
+  <Navbar />
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container has-text-centered">
+      <h1 class="title">
+        Descubre tu próximo <span>anime favorito</span>
+      </h1>
+      <p class="subtitle">
+        Miles de episodios, múltiples servidores, la mejor experiencia de streaming.
+      </p>
+      <div class="mt-5">
+        <a href="/catalogo" class="button is-primary is-large">
+          <span>Explorar Catálogo</span>
+        </a>
+        <a href="/buscar" class="button is-light is-large ml-3">
+          <span>Buscar Anime</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Animes -->
+  <section class="section">
+    <div class="container">
+      <div class="level">
+        <div class="level-left">
+          <h2 class="title is-3">Últimos Agregados</h2>
+        </div>
+        <div class="level-right">
+          <a href="/catalogo" class="button is-primary is-outlined">
+            Ver Todo →
+          </a>
+        </div>
+      </div>
+
+      {latestAnimes.length > 0 ? (
+        <div class="columns is-multiline">
+          {latestAnimes.map(anime => (
+            <div class="column is-3-desktop is-4-tablet is-6-mobile">
+              <AnimeCard anime={anime} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="has-text-centered py-6">
+          <p class="has-text-grey">No hay animes disponibles aún.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Top Rated -->
+  <section class="section" style="background: rgba(26, 26, 46, 0.2);">
+    <div class="container">
+      <div class="level">
+        <div class="level-left">
+          <h2 class="title is-3">Mejor Valorados</h2>
+        </div>
+      </div>
+
+      {topRatedAnimes.length > 0 ? (
+        <div class="columns is-multiline">
+          {topRatedAnimes.map(anime => (
+            <div class="column is-3-desktop is-4-tablet is-6-mobile">
+              <AnimeCard anime={anime} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="has-text-centered py-6">
+          <p class="has-text-grey">No hay animes valorados aún.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered mb-6">¿Por qué AnimeStream?</h2>
+      <div class="columns">
+        <div class="column is-4 has-text-centered">
+          <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+            <span class="is-size-1">🚀</span>
+            <h3 class="title is-5 mt-3">Rápido y Moderno</h3>
+            <p>Interfaz optimizada con carga instantánea y diseño responsivo.</p>
+          </div>
+        </div>
+        <div class="column is-4 has-text-centered">
+          <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+            <span class="is-size-1">📱</span>
+            <h3 class="title is-5 mt-3">Multiplataforma</h3>
+            <p>Accede desde cualquier dispositivo: móvil, tablet o desktop.</p>
+          </div>
+        </div>
+        <div class="column is-4 has-text-centered">
+          <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+            <span class="is-size-1">💬</span>
+            <h3 class="title is-5 mt-3">Comunidad Activa</h3>
+            <p>Comenta, valora y comparte tu opinión con otros fans.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</MainLayout>

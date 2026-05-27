@@ -1,0 +1,103 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatsCard from '../../components/admin/StatsCard.astro';
+import { apiUrl } from '../../services/api';
+
+let stats: any = { latestAnimes: [], userStats: { total: 0, totalAdmins: 0, totalUsers: 0 } };
+const token = Astro.cookies.get('token')?.value;
+
+try {
+  const res = await fetch(apiUrl('/dashboard/stats'), {
+    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+  });
+  if (res.ok) {
+    const data = await res.json();
+    stats = data.data;
+  }
+} catch (e) {
+  console.error('Error fetching dashboard:', e);
+}
+---
+
+<AdminLayout title="Dashboard">
+  <div class="columns is-multiline">
+    <div class="column is-3">
+      <StatsCard value={stats.userStats?.total || 0} label="Total Usuarios" icon="👥" color="primary" />
+    </div>
+    <div class="column is-3">
+      <StatsCard value={stats.userStats?.totalAdmins || 0} label="Administradores" icon="👤" color="warning" />
+    </div>
+    <div class="column is-3">
+      <StatsCard value={stats.userStats?.totalUsers || 0} label="Usuarios Regulares" icon="👤" color="success" />
+    </div>
+    <div class="column is-3">
+      <StatsCard value={stats.latestAnimes?.length || 0} label="Animes Recientes" icon="📺" color="info" />
+    </div>
+  </div>
+
+  <div class="columns mt-5">
+    <div class="column is-8">
+      <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+        <h3 class="title is-5">Animes Recientes</h3>
+        {stats.latestAnimes?.length > 0 ? (
+          <div class="table-container">
+            <table class="table is-fullwidth is-hoverable">
+              <thead>
+                <tr>
+                  <th>Título</th>
+                  <th>Estado</th>
+                  <th>Rating</th>
+                  <th>Episodios</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.latestAnimes.map((anime: any) => (
+                  <tr>
+                    <td>
+                      <a href={`/anime/${anime.slug}`} class="has-text-primary">{anime.title}</a>
+                    </td>
+                    <td>
+                      <span class={`tag ${anime.status === 'ongoing' ? 'is-success' : 'is-primary'}`}>
+                        {anime.status}
+                      </span>
+                    </td>
+                    <td>⭐ {anime.rating.toFixed(1)}</td>
+                    <td>{anime.episodesCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p class="has-text-grey">No hay animes registrados aún.</p>
+        )}
+      </div>
+    </div>
+
+    <div class="column is-4">
+      <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+        <h3 class="title is-5">⚡ Acciones Rápidas</h3>
+        <div class="buttons are-medium">
+          <a href="/admin/animes" class="button is-primary is-fullwidth">
+            <span class="icon">🎬</span>
+            <span>Gestionar Animes</span>
+          </a>
+          <a href="/admin/episodios" class="button is-info is-fullwidth">
+            <span class="icon">📺</span>
+            <span>Gestionar Episodios</span>
+          </a>
+          <a href="/admin/comentarios" class="button is-warning is-fullwidth">
+            <span class="icon">💬</span>
+            <span>Moderar Comentarios</span>
+          </a>
+          <a href="/admin/usuarios" class="button is-success is-fullwidth">
+            <span class="icon">👥</span>
+            <span>Gestionar Usuarios</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</AdminLayout>

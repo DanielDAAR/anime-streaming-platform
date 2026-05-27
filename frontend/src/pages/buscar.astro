@@ -1,0 +1,87 @@
+---
+export const prerender = false;
+
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import AnimeCard from '../components/AnimeCard.astro';
+import { apiUrl } from '../services/api';
+
+const query = Astro.url.searchParams.get('q') || '';
+
+let animes: any[] = [];
+let total = 0;
+
+if (query) {
+  try {
+    const res = await fetch(apiUrl(`/animes?search=${encodeURIComponent(query)}&limit=50`));
+    if (res.ok) {
+      const data = await res.json();
+      animes = data.data || [];
+      total = data.meta?.total || 0;
+    }
+  } catch (e) {
+    console.error('Error searching:', e);
+  }
+}
+---
+
+<MainLayout 
+  title={query ? `Resultados para "${query}" | AnimeStream` : 'Buscar Anime | AnimeStream'}
+  description="Busca tus animes favoritos en AnimeStream."
+  canonical={`/buscar?q=${query}`}
+>
+  <Navbar />
+
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-2">Buscar Anime</h1>
+
+      <form method="GET" action="/buscar" class="mb-6">
+        <div class="field has-addons">
+          <div class="control is-expanded search-box">
+            <input 
+              type="text" 
+              name="q" 
+              class="input is-large" 
+              placeholder="Escribe el nombre del anime..."
+              value={query}
+              autofocus
+            />
+          </div>
+          <div class="control">
+            <button type="submit" class="button is-primary is-large">
+              Buscar
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {query && (
+        <>
+          <p class="has-text-grey mb-4">
+            {total > 0 ? `Se encontraron ${total} resultados` : 'No se encontraron resultados'}
+          </p>
+
+          {animes.length > 0 && (
+            <div class="columns is-multiline">
+              {animes.map(anime => (
+                <div class="column is-3-desktop is-4-tablet is-6-mobile">
+                  <AnimeCard anime={anime} />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {!query && (
+        <div class="has-text-centered py-6">
+          <p class="is-size-4 has-text-grey">Escribe algo para comenzar a buscar</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <Footer />
+</MainLayout>

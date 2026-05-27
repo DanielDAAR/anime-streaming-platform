@@ -1,0 +1,475 @@
+---
+export const prerender = true;
+
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<MainLayout 
+  title="Iniciar Sesión | AnimeStream"
+  description="Inicia sesión en tu cuenta de AnimeStream para acceder a todas las funciones."
+  canonical="/login"
+>
+  <Navbar />
+
+  <section class="auth-section">
+    <div class="auth-container">
+      <!-- Left Panel -->
+      <div class="auth-panel left-panel">
+        <div class="panel-content">
+          <div class="space-title">AnimeStream</div>
+          <div class="space-illustration">
+            <svg viewBox="0 0 200 200" class="planet-svg">
+              <circle cx="100" cy="100" r="60" fill="#D65A72" opacity="0.9"/>
+              <circle cx="100" cy="100" r="55" fill="#C95D63" opacity="0.6"/>
+              <circle cx="140" cy="80" r="15" fill="#5C1E72" opacity="0.7"/>
+              <ellipse cx="100" cy="100" rx="75" ry="15" fill="none" stroke="#a29bfe" stroke-width="2" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="floating-text">Bienvenido de Vuelta</div>
+          <div class="particles">
+            <div class="particle p1"></div>
+            <div class="particle p2"></div>
+            <div class="particle p3"></div>
+            <div class="particle p4"></div>
+            <div class="particle p5"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="auth-panel right-panel">
+        <div class="form-wrapper">
+          <h1 class="form-title">Iniciar Sesión</h1>
+          <p class="form-subtitle">Accede a tu cuenta</p>
+
+          <form id="login-form" class="auth-form">
+            <div class="form-group">
+              <input 
+                type="email" 
+                class="form-input" 
+                id="email" 
+                placeholder="Email"
+                required
+              />
+              <div class="input-underline"></div>
+            </div>
+
+            <div class="form-group">
+              <input 
+                type="password" 
+                class="form-input" 
+                id="password" 
+                placeholder="Contraseña"
+                required
+              />
+              <div class="input-underline"></div>
+            </div>
+
+            <div class="form-options">
+              <a href="#forgot" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="auth-button" id="login-btn">
+              Iniciar Sesión
+            </button>
+
+            <div id="error-message" class="error-message is-hidden"></div>
+          </form>
+
+          <div class="auth-footer">
+            <p>¿No tienes cuenta? <a href="/registro" class="auth-link">Regístrate</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style define:vars={{ isLoading: 'false' }}>
+    .auth-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .auth-container {
+      display: flex;
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+
+    .left-panel {
+      background: linear-gradient(135deg, #1A103D 0%, #5C1E72 50%, #D65A72 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .right-panel {
+      background: linear-gradient(135deg, #2B124C 0%, #C95D63 100%);
+    }
+
+    .panel-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .space-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #F5EFFF;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .space-illustration {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 30px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .planet-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 20px rgba(255, 239, 255, 0.3));
+    }
+
+    .floating-text {
+      font-size: 1.1rem;
+      color: rgba(245, 239, 255, 0.8);
+      letter-spacing: 1px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 239, 255, 0.6);
+      border-radius: 50%;
+      animation: float-particle 4s infinite;
+    }
+
+    .p1 { width: 3px; height: 3px; top: 20%; left: 10%; animation-delay: 0s; }
+    .p2 { top: 40%; right: 15%; animation-delay: 1s; }
+    .p3 { top: 60%; left: 20%; animation-delay: 2s; }
+    .p4 { top: 30%; right: 25%; animation-delay: 1.5s; }
+    .p5 { top: 70%; right: 10%; animation-delay: 2.5s; }
+
+    @keyframes float-particle {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+      50% { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
+    }
+
+    .form-wrapper {
+      width: 100%;
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .form-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #F5EFFF;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .form-subtitle {
+      font-size: 0.95rem;
+      color: rgba(245, 239, 255, 0.7);
+      margin-bottom: 30px;
+      letter-spacing: 0.3px;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 12px 0;
+      font-size: 0.95rem;
+      color: #F5EFFF;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-input::placeholder {
+      color: rgba(245, 239, 255, 0.5);
+    }
+
+    .form-input:focus {
+      background: transparent;
+      border-bottom-color: #F5EFFF;
+    }
+
+    .form-input:focus::placeholder {
+      color: rgba(245, 239, 255, 0.3);
+    }
+
+    .input-underline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+      transition: width 0.3s ease;
+    }
+
+    .form-input:focus + .input-underline {
+      width: 100%;
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .forgot-password {
+      color: rgba(245, 239, 255, 0.6);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: #F5EFFF;
+    }
+
+    .auth-button {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: #F5EFFF;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      font-family: inherit;
+    }
+
+    .auth-button:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+      border-color: #F5EFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(162, 155, 254, 0.2);
+    }
+
+    .auth-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .error-message {
+      background: rgba(255, 118, 117, 0.15);
+      border: 1px solid rgba(255, 118, 117, 0.5);
+      color: #FFB3B2;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .error-message:not(.is-hidden) {
+      display: block;
+      animation: shake 0.5s ease-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .auth-footer {
+      text-align: center;
+      font-size: 0.95rem;
+      color: rgba(245, 239, 255, 0.7);
+    }
+
+    .auth-link {
+      color: #F5EFFF;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .auth-link:hover {
+      color: #a29bfe;
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .auth-panel {
+        padding: 40px 24px;
+      }
+
+      .left-panel {
+        min-height: 200px;
+      }
+
+      .right-panel {
+        min-height: 400px;
+      }
+
+      .space-title {
+        font-size: 1.5rem;
+      }
+
+      .space-illustration {
+        width: 100px;
+        height: 100px;
+      }
+
+      .form-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    .is-hidden {
+      display: none;
+    }
+  </style>
+
+  <script>
+    import { authApi } from '../services/api';
+    import { authService } from '../services/auth';
+
+    const form = document.getElementById('login-form') as HTMLFormElement;
+    const errorMsg = document.getElementById('error-message');
+    const loginBtn = document.getElementById('login-btn');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (loginBtn) {
+        loginBtn.classList.add('is-loading');
+        loginBtn.setAttribute('disabled', 'true');
+      }
+
+      errorMsg?.classList.add('is-hidden');
+
+      const email = (document.getElementById('email') as HTMLInputElement)?.value;
+      const password = (document.getElementById('password') as HTMLInputElement)?.value;
+
+      try {
+        const response = await authApi.login(email, password);
+        authService.setAuth(response.data);
+        window.location.href = '/';
+      } catch (err: any) {
+        if (errorMsg) {
+          errorMsg.textContent = err.message || 'Error al iniciar sesión';
+          errorMsg.classList.remove('is-hidden');
+        }
+      } finally {
+        if (loginBtn) {
+          loginBtn.classList.remove('is-loading');
+          loginBtn.removeAttribute('disabled');
+        }
+      }
+    });
+  </script>
+
+  <Footer />
+</MainLayout>

@@ -1,0 +1,184 @@
+---
+---
+
+<div class="modal" id="anime-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title" id="modal-title">Nuevo Anime</p>
+      <button class="delete" aria-label="close" id="close-modal"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="anime-form">
+        <input type="hidden" id="anime-id" />
+
+        <div class="field">
+          <label class="label">Título</label>
+          <div class="control">
+            <input class="input" type="text" id="anime-title" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Slug (URL amigable)</label>
+          <div class="control">
+            <input class="input" type="text" id="anime-slug" placeholder="se-genera-automaticamente" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Descripción</label>
+          <div class="control">
+            <textarea class="textarea" id="anime-description" rows="3" required></textarea>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Estado</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="anime-status">
+                    <option value="ongoing">En Emisión</option>
+                    <option value="completed">Finalizado</option>
+                    <option value="upcoming">Próximamente</option>
+                    <option value="cancelled">Cancelado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Año</label>
+              <div class="control">
+                <input class="input" type="number" id="anime-year" min="1900" max="2100" value={new Date().getFullYear()} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Géneros (separados por coma)</label>
+          <div class="control">
+            <input class="input" type="text" id="anime-genres" placeholder="Acción, Aventura, Fantasía" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Rating (0-10)</label>
+          <div class="control">
+            <input class="input" type="number" id="anime-rating" min="0" max="10" step="0.1" value="0" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">URL Poster</label>
+          <div class="control">
+            <input class="input" type="url" id="anime-poster" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">URL Banner</label>
+          <div class="control">
+            <input class="input" type="url" id="anime-banner" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Studio</label>
+          <div class="control">
+            <input class="input" type="text" id="anime-studio" />
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary" id="save-anime">Guardar</button>
+      <button class="button" id="cancel-modal">Cancelar</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+  import { animeApi } from '../../services/api';
+
+  const modal = document.getElementById('anime-modal');
+  const form = document.getElementById('anime-form') as HTMLFormElement;
+
+  document.getElementById('close-modal')?.addEventListener('click', closeModal);
+  document.getElementById('cancel-modal')?.addEventListener('click', closeModal);
+  document.querySelector('.modal-background')?.addEventListener('click', closeModal);
+
+  function closeModal() {
+    modal?.classList.remove('is-active');
+    form?.reset();
+  }
+
+  function openModal(title = 'Nuevo Anime') {
+    document.getElementById('modal-title')!.textContent = title;
+    modal?.classList.add('is-active');
+  }
+
+  // Auto-generate slug from title
+  document.getElementById('anime-title')?.addEventListener('input', (e) => {
+    const title = (e.target as HTMLInputElement).value;
+    const slugInput = document.getElementById('anime-slug') as HTMLInputElement;
+    if (slugInput && !slugInput.value) {
+      slugInput.value = title.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+  });
+
+  document.getElementById('save-anime')?.addEventListener('click', async () => {
+    const animeData = {
+      title: (document.getElementById('anime-title') as HTMLInputElement)?.value,
+      slug: (document.getElementById('anime-slug') as HTMLInputElement)?.value,
+      description: (document.getElementById('anime-description') as HTMLTextAreaElement)?.value,
+      status: (document.getElementById('anime-status') as HTMLSelectElement)?.value,
+      year: parseInt((document.getElementById('anime-year') as HTMLInputElement)?.value),
+      genres: (document.getElementById('anime-genres') as HTMLInputElement)?.value.split(',').map(g => g.trim()).filter(Boolean),
+      rating: parseFloat((document.getElementById('anime-rating') as HTMLInputElement)?.value),
+      images: {
+        poster: (document.getElementById('anime-poster') as HTMLInputElement)?.value,
+        banner: (document.getElementById('anime-banner') as HTMLInputElement)?.value,
+      },
+      studio: (document.getElementById('anime-studio') as HTMLInputElement)?.value,
+    };
+
+    try {
+      const id = (document.getElementById('anime-id') as HTMLInputElement)?.value;
+      if (id) {
+        await animeApi.update(id, animeData);
+      } else {
+        await animeApi.create(animeData);
+      }
+      closeModal();
+      window.location.reload();
+    } catch (err) {
+      alert('Error al guardar anime');
+      console.error(err);
+    }
+  });
+
+  // Expose functions globally for admin pages
+  (window as any).openAnimeModal = openModal;
+  (window as any).closeAnimeModal = closeModal;
+  (window as any).editAnimeModal = (anime: any) => {
+    document.getElementById('anime-id')!.setAttribute('value', anime.id);
+    (document.getElementById('anime-title') as HTMLInputElement).value = anime.title;
+    (document.getElementById('anime-slug') as HTMLInputElement).value = anime.slug;
+    (document.getElementById('anime-description') as HTMLTextAreaElement).value = anime.description;
+    (document.getElementById('anime-status') as HTMLSelectElement).value = anime.status;
+    (document.getElementById('anime-year') as HTMLInputElement).value = String(anime.year);
+    (document.getElementById('anime-genres') as HTMLInputElement).value = anime.genres.join(', ');
+    (document.getElementById('anime-rating') as HTMLInputElement).value = String(anime.rating);
+    (document.getElementById('anime-poster') as HTMLInputElement).value = anime.images.poster;
+    (document.getElementById('anime-banner') as HTMLInputElement).value = anime.images.banner || '';
+    (document.getElementById('anime-studio') as HTMLInputElement).value = anime.studio || '';
+    openModal('Editar Anime');
+  };
+</script>

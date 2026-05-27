@@ -1,0 +1,33 @@
+---
+import type { Anime } from '../types';
+
+interface Props {
+  anime: Anime;
+}
+
+const { anime } = Astro.props;
+
+const statusLabels: Record<string, string> = {
+  ongoing: 'En Emisión',
+  completed: 'Finalizado',
+  upcoming: 'Próximamente',
+  cancelled: 'Cancelado'
+};
+---
+
+<a href={`/anime/${anime.slug}`} class="anime-card" data-anime-id={anime.id}>
+  <div class="card-image">
+    <img src={anime.images.poster} alt={anime.title} loading="lazy" />
+    <span class="rating-badge">⭐ {anime.rating.toFixed(1)}</span>
+    <span class={`status-badge ${anime.status}`}>{statusLabels[anime.status]}</span>
+  </div>
+  <div class="card-content">
+    <h3 class="title">{anime.title}</h3>
+    <p class="is-size-7 has-text-grey">{anime.episodesCount} episodios • {anime.year}</p>
+    <div class="genres">
+      {anime.genres.slice(0, 3).map(genre => (
+        <span class="tag">{genre}</span>
+      ))}
+    </div>
+  </div>
+</a>

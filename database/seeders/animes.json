@@ -1,0 +1,128 @@
+[
+  {
+    "slug": "attack-on-titan",
+    "title": "Attack on Titan",
+    "description": "En un mundo donde la humanidad vive dentro de ciudades rodeadas por enormes muros debido a los Titanes, criaturas humanoides gigantes que devoran humanos. Eren Yeager jura exterminar a los Titanes después de que un Titán Colosal destruye su ciudad natal.",
+    "genres": ["Acción", "Drama", "Fantasía", "Militar"],
+    "rating": 9.1,
+    "images": {
+      "poster": "https://cdn.myanimelist.net/images/anime/10/47347.jpg",
+      "banner": "https://cdn.myanimelist.net/images/anime/10/47347l.jpg",
+      "thumbnail": "https://cdn.myanimelist.net/images/anime/10/47347t.jpg"
+    },
+    "status": "completed",
+    "year": 2013,
+    "studio": "Wit Studio / MAPPA",
+    "seo": {
+      "metaTitle": "Attack on Titan | Ver Online | AnimeStream",
+      "metaDescription": "Ver Attack on Titan online. Todos los episodios disponibles en múltiples servidores.",
+      "keywords": "attack on titan, shingeki no kyojin, anime online",
+      "canonicalUrl": "/anime/attack-on-titan"
+    }
+  },
+  {
+    "slug": "demon-slayer",
+    "title": "Demon Slayer: Kimetsu no Yaiba",
+    "description": "Tanjiro Kamado es un joven de buen corazón que se gana la vida vendiendo carbón. Su vida cambia por completo cuando su familia es masacrada por un demonio y su hermana Nezuko es convertida en uno.",
+    "genres": ["Acción", "Fantasía", "Sobrenatural"],
+    "rating": 8.7,
+    "images": {
+      "poster": "https://cdn.myanimelist.net/images/anime/1286/99889.jpg",
+      "banner": "https://cdn.myanimelist.net/images/anime/1286/99889l.jpg",
+      "thumbnail": "https://cdn.myanimelist.net/images/anime/1286/99889t.jpg"
+    },
+    "status": "ongoing",
+    "year": 2019,
+    "studio": "ufotable",
+    "seo": {
+      "metaTitle": "Demon Slayer | Ver Online | AnimeStream",
+      "metaDescription": "Ver Demon Slayer: Kimetsu no Yaiba online. Episodios en HD disponibles.",
+      "keywords": "demon slayer, kimetsu no yaiba, anime online",
+      "canonicalUrl": "/anime/demon-slayer"
+    }
+  },
+  {
+    "slug": "jujutsu-kaisen",
+    "title": "Jujutsu Kaisen",
+    "description": "Yuji Itadori es un estudiante de secundaria con una fuerza física extraordinaria. Su vida da un giro cuando consume un dedo maldito para salvar a sus amigos, convirtiéndose en el recipiente de Sukuna, el Rey de las Maldiciones.",
+    "genres": ["Acción", "Sobrenatural", "Escolar"],
+    "rating": 8.6,
+    "images": {
+      "poster": "https://cdn.myanimelist.net/images/anime/1171/109222.jpg",
+      "banner": "https://cdn.myanimelist.net/images/anime/1171/109222l.jpg",
+      "thumbnail": "https://cdn.myanimelist.net/images/anime/1171/109222t.jpg"
+    },
+    "status": "ongoing",
+    "year": 2020,
+    "studio": "MAPPA",
+    "seo": {
+      "metaTitle": "Jujutsu Kaisen | Ver Online | AnimeStream",
+      "metaDescription": "Ver Jujutsu Kaisen online. Todos los episodios en español.",
+      "keywords": "jujutsu kaisen, anime online, ver anime",
+      "canonicalUrl": "/anime/jujutsu-kaisen"
+    }
+  },
+  {
+    "slug": "one-piece",
+    "title": "One Piece",
+    "description": "Monkey D. Luffy sueña con convertirse en el Rey de los Piratas. Para lograrlo, debe encontrar el tesoro legendario de Gol D. Roger conocido como One Piece, ubicado en el Grand Line.",
+    "genres": ["Acción", "Aventura", "Comedia", "Fantasía"],
+    "rating": 8.9,
+    "images": {
+      "poster": "https://cdn.myanimelist.net/images/anime/6/73245.jpg",
+      "banner": "https://cdn.myanimelist.net/images/anime/6/73245l.jpg",
+      "thumbnail": "https://cdn.myanimelist.net/images/anime/6/73245t.jpg"
+    },
+    "status": "ongoing",
+    "year": 1999,
+    "studio": "Toei Animation",
+    "seo": {
+      "metaTitle": "One Piece | Ver Online | AnimeStream",
+      "metaDescription": "Ver One Piece online. Más de 1000 episodios disponibles.",
+      "keywords": "one piece, anime online, luffy",
+      "canonicalUrl": "/anime/one-piece"
+    }
+  },
+  {
+    "slug": "spy-x-family",
+    "title": "SPY x FAMILY",
+    "description": "El espía Twilight debe crear una familia falsa para infiltrarse en una escuela elite. Lo que no sabe es que la niña que adopta es telepática y su esposa es una asesina profesional.",
+    "genres": ["Acción", "Comedia", "Slice of Life"],
+    "rating": 8.5,
+    "images": {
+      "poster": "https://cdn.myanimelist.net/images/anime/1441/122795.jpg",
+      "banner": "https://cdn.myanimelist.net/images/anime/1441/122795l.jpg",
+      "thumbnail": "https://cdn.myanimelist.net/images/anime/1441/122795t.jpg"
+    },
+    "status": "ongoing",
+    "year": 2022,
+    "studio": "Wit Studio / CloverWorks",
+    "seo": {
+      "metaTitle": "SPY x FAMILY | Ver Online | AnimeStream",
+      "metaDescription": "Ver SPY x FAMILY online. La familia de espías más divertida del anime.",
+      "keywords": "spy x family, anime online, anya",
+      "canonicalUrl": "/anime/spy-x-family"
+    }
+  },
+  {
+    "slug": "chainsaw-man",
+    "title": "Chainsaw Man",
+    "description": "Denji es un joven que vive en la pobreza extrema y trabaja como cazador de demonios para pagar la deuda de su padre. Después de morir, se fusiona con su demonio perro Pochita y renace como Chainsaw Man.",
+    "genres": ["Acción", "Sobrenatural", "Horror"],
+    "rating": 8.5,
+    "images": {
+      "poster": "https://cdn.myanimelist.net/images/anime/1806/126216.jpg",
+      "banner": "https://cdn.myanimelist.net/images/anime/1806/126216l.jpg",
+      "thumbnail": "https://cdn.myanimelist.net/images/anime/1806/126216t.jpg"
+    },
+    "status": "completed",
+    "year": 2022,
+    "studio": "MAPPA",
+    "seo": {
+      "metaTitle": "Chainsaw Man | Ver Online | AnimeStream",
+      "metaDescription": "Ver Chainsaw Man online. Acción y horror en cada episodio.",
+      "keywords": "chainsaw man, anime online, denji",
+      "canonicalUrl": "/anime/chainsaw-man"
+    }
+  }
+]

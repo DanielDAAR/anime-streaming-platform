@@ -1,0 +1,28 @@
+---
+export const prerender = true;
+
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<MainLayout 
+  title="Página no encontrada | AnimeStream"
+  description="La página que buscas no existe."
+>
+  <Navbar />
+
+  <section class="section" style="min-height: 70vh; display: flex; align-items: center;">
+    <div class="container has-text-centered">
+      <h1 class="title is-1" style="font-size: 8rem; color: #6c5ce7;">404</h1>
+      <h2 class="title is-3">Página no encontrada</h2>
+      <p class="subtitle">El anime que buscas no existe en nuestro catálogo... todavía.</p>
+      <a href="/" class="button is-primary is-large mt-5">
+        <span class="icon">🏠</span>
+        <span>Volver al Inicio</span>
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</MainLayout>

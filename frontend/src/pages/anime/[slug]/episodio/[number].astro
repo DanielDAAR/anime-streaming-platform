@@ -1,0 +1,153 @@
+---
+export const prerender = false;
+
+import MainLayout from '../../../../layouts/MainLayout.astro';
+import Navbar from '../../../../components/Navbar.astro';
+import Footer from '../../../../components/Footer.astro';
+import { apiUrl } from '../../../../services/api';
+
+const { slug, number } = Astro.params;
+
+let anime: any = null;
+let episode: any = null;
+let allEpisodes: any[] = [];
+
+if (slug && number) {
+  try {
+    const [animeRes, episodeRes, episodesRes] = await Promise.all([
+      fetch(apiUrl(`/animes/${slug}`)),
+      fetch(apiUrl(`/animes/${slug}/episodes/${number}`)),
+      fetch(apiUrl(`/animes/${slug}/episodes?limit=100`))
+    ]);
+
+    if (animeRes.ok) anime = (await animeRes.json()).data;
+    if (episodeRes.ok) episode = (await episodeRes.json()).data;
+    if (episodesRes.ok) allEpisodes = (await episodesRes.json()).data || [];
+  } catch (e) {
+    console.error('Error fetching episode:', e);
+  }
+}
+
+if (!anime || !episode) {
+  return Astro.redirect('/404');
+}
+
+const currentIndex = allEpisodes.findIndex((ep: any) => ep.id === episode.id);
+const prevEpisode = currentIndex > 0 ? allEpisodes[currentIndex - 1] : null;
+const nextEpisode = currentIndex < allEpisodes.length - 1 ? allEpisodes[currentIndex + 1] : null;
+const activeServer = episode.servers.find((s: any) => s.active) || episode.servers[0];
+---
+
+<MainLayout 
+  title={`${anime.title} - Episodio ${episode.number} | AnimeStream`}
+  description={`Ver ${anime.title} episodio ${episode.number}: ${episode.title}`}
+  canonical={`/anime/${anime.slug}/episodio/${episode.number}`}
+>
+  <Navbar />
+
+  <section class="section pt-4">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb has-succeeds-separator mb-4" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href={`/anime/${anime.slug}`}>{anime.title}</a></li>
+          <li class="is-active"><a href="#" aria-current="page">Episodio {episode.number}</a></li>
+        </ul>
+      </nav>
+
+      <h1 class="title is-4 mb-4">{anime.title} - Episodio {episode.number}: {episode.title}</h1>
+
+      <!-- Player -->
+      <div class="player-container" id="player-container">
+        <iframe 
+          id="video-player"
+          src={activeServer?.url} 
+          allowfullscreen
+          sandbox="allow-scripts allow-same-origin allow-presentation"
+        ></iframe>
+      </div>
+
+      <!-- Server Selector -->
+      <div class="server-selector mt-4">
+        <span class="has-text-grey mr-3">Servidores:</span>
+        {episode.servers.map((server: any, idx: number) => (
+          <button 
+            class={`server-btn ${server.id === activeServer?.id ? 'active' : ''}`}
+            data-url={server.url}
+            onclick="changeServer(this)"
+          >
+            {server.name}
+            <span class="quality">({server.quality})</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Episode Info -->
+      <div class="box mt-5" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+        <h3 class="title is-5">Información del Episodio</h3>
+        {episode.description && <p>{episode.description}</p>}
+        <div class="tags mt-3">
+          {episode.duration && <span class="tag">⏱️ {episode.duration} min</span>}
+          <span class="tag">📺 Episodio {episode.number} de {allEpisodes.length}</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="level mt-5">
+        <div class="level-left">
+          {prevEpisode && (
+            <a 
+              href={`/anime/${anime.slug}/episodio/${prevEpisode.number}`}
+              class="button is-primary"
+            >
+              <span class="icon">←</span>
+              <span>Ep. Anterior</span>
+            </a>
+          )}
+        </div>
+        <div class="level-right">
+          {nextEpisode && (
+            <a 
+              href={`/anime/${anime.slug}/episodio/${nextEpisode.number}`}
+              class="button is-primary"
+            >
+              <span>Ep. Siguiente</span>
+              <span class="icon">→</span>
+            </a>
+          )}
+        </div>
+      </div>
+
+      <!-- Episode List -->
+      <h3 class="title is-5 mt-6">Todos los Episodios</h3>
+      <div class="columns is-multiline">
+        {allEpisodes.map((ep: any) => (
+          <div class="column is-3">
+            <a 
+              href={`/anime/${anime.slug}/episodio/${ep.number}`}
+              class={`button is-fullwidth ${ep.id === episode.id ? 'is-primary' : 'is-dark'}`}
+            >
+              Ep. {ep.number}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    function changeServer(btn) {
+      const url = btn.getAttribute('data-url');
+      const player = document.getElementById('video-player');
+      if (player && url) {
+        player.src = url;
+      }
+      // Update active state
+      document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+  <Footer />
+</MainLayout>

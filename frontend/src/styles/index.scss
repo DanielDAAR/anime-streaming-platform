@@ -1,0 +1,69 @@
+// ============================================
+// PUNTO DE ENTRADA - ESTILOS GLOBALES
+// ============================================
+// Este es el archivo principal que importar en Astro
+// Reemplaza el antiguo global.scss
+// 
+// IMPORTAR EN ASTRO CON:
+// import '../styles/index.scss'
+
+// ============================================
+// 1. CONFIGURACIÓN (SIN OUTPUT CSS)
+// ============================================
+// Importamos configuración ANTES de Bulma
+// @use no genera CSS, solo define variables y funciones
+
+@use 'config/variables' as *;
+@use 'config/breakpoints' as *;
+@use 'config/typography' as typography;
+@use 'config/theme' as *;
+
+// ============================================
+// 2. VENDOR - BULMA FRAMEWORK
+// ============================================
+// Bulma se importa DESPUÉS de la configuración
+// Esto permite que Bulma use nuestras variables sobrescritas
+
+@use 'vendor/bulma';
+
+// ============================================
+// 3. ESTILOS BASE GLOBALES
+// ============================================
+// Reset, tipografía global, elementos base
+
+@use 'base/global' as *;
+
+// ============================================
+// 4. TEMAS (DARK MODE)
+// ============================================
+// Estilos específicos del tema actual
+
+@use 'themes/dark' as *;
+
+// ============================================
+// 5. COMPONENTES PERSONALIZADOS
+// ============================================
+// Componentes Astro específicos que extienden Bulma
+
+@use 'components/custom-components' as *;
+
+// ============================================
+// 6. UTILIDADES PERSONALIZADAS
+// ============================================
+// Clases auxiliares tipo Tailwind (use con moderación)
+
+@use 'utilities/custom-utilities' as *;
+
+// ============================================
+// INFORMACIÓN DE COMPILACIÓN
+// ============================================
+// Este archivo marca el final de la compilación SCSS moderna
+// 
+// CAMBIOS PRINCIPALES:
+// 1. @use en lugar de @import (moderna, sin duplicados)
+// 2. Namespaces para evitar conflictos
+// 3. Funciones de color modernas (color-mix en lugar de darken())
+// 4. Soporte completo para Dart Sass 2.x y 3.x
+// 5. Sin warnings de funciones deprecated
+// 6. Mejor performance (no importa todo de Bulma)
+// 7. Tema oscuro integrado y escalable

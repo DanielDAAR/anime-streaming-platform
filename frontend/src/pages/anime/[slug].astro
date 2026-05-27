@@ -1,0 +1,145 @@
+---
+export const prerender = false;
+
+import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import CommentSection from '../../components/CommentSection.astro';
+import { apiUrl } from '../../services/api';
+
+const { slug } = Astro.params;
+
+let anime: any = null;
+let episodes: any[] = [];
+let comments: any[] = [];
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+try {
+  // Fetch anime
+  const animeRes = await fetch(apiUrl(`/animes/${slug}`));
+  if (animeRes.ok) {
+    const animeData = await animeRes.json();
+    anime = animeData.data;
+  }
+
+  if (anime) {
+    // Fetch episodes
+    const episodesRes = await fetch(apiUrl(`/animes/${anime.slug}/episodes?limit=100`));
+    if (episodesRes.ok) {
+      const epData = await episodesRes.json();
+      episodes = epData.data || [];
+    }
+
+    // Fetch comments
+    const commentsRes = await fetch(apiUrl(`/comments/${anime.id}?limit=50`));
+    if (commentsRes.ok) {
+      const commData = await commentsRes.json();
+      comments = commData.data || [];
+    }
+  }
+} catch (e) {
+  console.error('Error fetching anime detail:', e);
+}
+
+if (!anime) {
+  return Astro.redirect('/404');
+}
+
+const statusLabels: Record<string, string> = {
+  ongoing: 'En Emisión',
+  completed: 'Finalizado',
+  upcoming: 'Próximamente',
+  cancelled: 'Cancelado'
+};
+---
+
+<MainLayout 
+  title={`${anime.title} | AnimeStream`}
+  description={anime.description.substring(0, 160)}
+  image={anime.images.poster}
+  canonical={`/anime/${anime.slug}`}
+>
+  <Navbar />
+
+  <!-- Anime Hero -->
+  <section class="hero-section" style={`background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%), url(${anime.images.banner || anime.images.poster}) center/cover;`}>
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-3">
+          <figure class="image is-2by3">
+            <img src={anime.images.poster} alt={anime.title} class="has-radius" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);" />
+          </figure>
+        </div>
+        <div class="column is-9">
+          <div class="tags mb-3">
+            <span class={`tag is-medium ${anime.status === 'ongoing' ? 'is-success' : anime.status === 'completed' ? 'is-primary' : 'is-warning'}`}>
+              {statusLabels[anime.status]}
+            </span>
+            <span class="tag is-medium">⭐ {anime.rating.toFixed(1)}</span>
+            <span class="tag is-medium">{anime.episodesCount} episodios</span>
+            <span class="tag is-medium">{anime.year}</span>
+          </div>
+          <h1 class="title is-2">{anime.title}</h1>
+          <p class="subtitle">{anime.description}</p>
+          <div class="tags">
+            {anime.genres.map((genre: string) => (
+              <span class="tag is-primary is-light">{genre}</span>
+            ))}
+          </div>
+          {anime.studio && (
+            <p class="mt-3"><strong>Studio:</strong> {anime.studio}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Episodes -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Episodios</h2>
+      {episodes.length > 0 ? (
+        <div class="columns is-multiline">
+          {episodes.map(episode => (
+            <div class="column is-6">
+              <EpisodeCard episode={episode} animeSlug={anime.slug} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="has-text-centered py-6">
+          <p class="has-text-grey">No hay episodios disponibles aún.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Comments -->
+  <section class="section" style="background: #1a1a2e;">
+    <div class="container">
+      <CommentSection animeId={anime.id} comments={comments} />
+    </div>
+  </section>
+
+  <!-- SEO Structured Data -->
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TVSeries",
+    "name": anime.title,
+    "description": anime.description,
+    "image": anime.images.poster,
+    "genre": anime.genres,
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": anime.rating,
+      "bestRating": 10
+    },
+    "numberOfEpisodes": anime.episodesCount
+  })} />
+
+  <Footer />
+</MainLayout>

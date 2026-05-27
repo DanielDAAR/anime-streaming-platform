@@ -1,0 +1,181 @@
+// ============================================
+// TIPOGRAFÍA AVANZADA - Funciones y Mixins
+// ============================================
+// Importar con: @use 'config/typography' as typography
+
+@use 'variables' as *;
+
+// ============================================
+// FUNCIONES DE COLOR MODERNAS (Dart Sass)
+// ============================================
+// Reemplazo de funciones deprecated
+
+/// Oscurece un color de forma moderna (reemplaza darken())
+/// @param {color} $color - Color a oscurecer
+/// @param {number} $amount - Porcentaje (0-100)
+/// @return {color} - Color más oscuro
+@function darken-modern($color, $amount) {
+  @return color-mix(in srgb, $color #{100% - $amount}, #000);
+}
+
+/// Aclara un color de forma moderna (reemplaza lighten())
+/// @param {color} $color - Color a aclarar
+/// @param {number} $amount - Porcentaje (0-100)
+/// @return {color} - Color más claro
+@function lighten-modern($color, $amount) {
+  @return color-mix(in srgb, $color #{100% - $amount}, #fff);
+}
+
+/// Añade transparencia a un color (reemplaza rgba())
+/// @param {color} $color - Color base
+/// @param {number} $alpha - Opacidad (0-1)
+/// @return {color} - Color con alfa
+@function with-alpha($color, $alpha) {
+  @return color-mix(in srgb, $color #{$alpha * 100%}, transparent);
+}
+
+// ============================================
+// MIXINS DE TIPOGRAFÍA
+// ============================================
+
+/// Define un nivel de encabezado
+/// @param {number} $size - Tamaño de fuente
+/// @param {number} $weight - Peso de fuente (400-900)
+/// @param {number} $line-height - Alto de línea (opcional)
+@mixin heading($size, $weight: 600, $line-height: $line-height-tight) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: -0.5px;
+  color: $color-text-primary;
+}
+
+/// Cuerpo de texto con opciones
+/// @param {number} $size - Tamaño (por defecto $font-size-base)
+/// @param {number} $weight - Peso (por defecto 400)
+/// @param {number} $line-height - Alto de línea (por defecto $line-height-normal)
+@mixin body-text($size: $font-size-base, $weight: 400, $line-height: $line-height-normal) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing-normal;
+  color: $color-text-primary;
+}
+
+/// Trunca texto a una línea con elipsis
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/// Trunca a múltiples líneas (requiere altura fija)
+/// @param {number} $lines - Número de líneas
+@mixin text-clamp($lines: 3) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/// Aplica efecto de texto con gradiente
+/// @param {color} $color-1 - Primer color
+/// @param {color} $color-2 - Segundo color
+@mixin gradient-text($color-1, $color-2) {
+  background: linear-gradient(135deg, $color-1, $color-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// ============================================
+// MIXINS DE FLEXBOX / GRID
+// ============================================
+
+/// Flexbox centrado
+/// @param {string} $direction - Dirección (row, column)
+/// @param {string} $justify - Alineamiento horizontal (center, space-between, etc)
+/// @param {string} $align - Alineamiento vertical (center, flex-start, etc)
+@mixin flex-center($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+/// Grid centrado
+@mixin grid-center($cols: 1, $gap: $space-md) {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+  place-items: center;
+}
+
+// ============================================
+// MIXINS DE INTERACCIÓN
+// ============================================
+
+/// Transición suave con Tailwind-like presets
+/// @param {string} $property - Propiedad a transicionar
+/// @param {string} $duration - Duración (fast, base, slow)
+@mixin transition($property: all, $duration: base) {
+  $time: $transition-base;
+  
+  @if $duration == fast {
+    $time: $transition-fast;
+  } @else if $duration == slow {
+    $time: $transition-slow;
+  }
+  
+  transition: $property $time cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/// Focus visible accesible
+@mixin focus-visible {
+  outline: 2px solid $color-brand-primary;
+  outline-offset: 2px;
+}
+
+/// Hover state optimizado
+/// @param {string} $effect - Tipo de efecto (lift, highlight, etc)
+@mixin hover-state($effect: lift) {
+  @include transition(all, fast);
+  
+  @if $effect == lift {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  } @else if $effect == highlight {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+}
+
+// ============================================
+// MIXINS DE EFECTOS VISUALES
+// ============================================
+
+/// Vidrio/glassmorphism moderno
+/// @param {number} $blur - Cantidad de blur (px)
+/// @param {color} $bg - Color de fondo
+/// @param {number} $opacity - Opacidad del fondo
+@mixin glass($blur: 10px, $bg: $color-surface-base, $opacity: 1) {
+  background-color: color-mix(in srgb, $bg, transparent #{100% - ($opacity * 100%)}); 
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid color-mix(in srgb, #fff 10%, transparent);
+}
+
+/// Brillo/glow effect
+/// @param {color} $color - Color del brillo
+/// @param {number} $size - Tamaño del blur (px)
+@mixin glow($color: $color-brand-primary, $size: 20px) {
+  box-shadow: 0 0 $size color-mix(in srgb, $color 30%, transparent);
+}
+
+/// Degradado de fondo
+/// @param {color} $color-1 - Primer color
+/// @param {color} $color-2 - Segundo color
+/// @param {string} $angle - Ángulo del gradiente
+@mixin gradient-bg($color-1, $color-2, $angle: 135deg) {
+  background: linear-gradient($angle, $color-1, $color-2);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "anime-streaming-platform",
+  "version": "1.0.0",
+  "description": "Plataforma de streaming de anime - Proyecto Integrador",
+  "scripts": {
+    "install:all": "cd backend && go mod download && cd ../frontend && npm install && cd ../database/seeders && npm install bcryptjs mongodb",
+    "dev:backend": "cd backend && go run main.go",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd database/seeders && node seed.js",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run preview"
+  },
+  "keywords": [
+    "anime",
+    "streaming",
+    "astro",
+    "go",
+    "mongodb"
+  ],
+  "author": "Proyecto Integrador",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "mongodb": "^7.2.0"
+  }
+}

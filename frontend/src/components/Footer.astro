@@ -1,0 +1,147 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column is-4">
+        <div class="footer-brand">
+          <h3 class="title is-4">AnimeStream</h3>
+          <p class="subtitle is-6 mb-4">
+            Tu plataforma para descubrir y disfrutar de los mejores animes.
+          </p>
+          <div class="social-links">
+            <a href="https://instagram.com/danielsoftworks" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"></path>
+                <circle cx="17.5" cy="6.5" r="1.5"></circle>
+              </svg>
+            </a>
+            <a href="mailto:contact@animestream.dev" class="social-link" title="Email">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="column is-4">
+        <h4 class="title is-6">Enlaces</h4>
+        <ul class="footer-links">
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/catalogo">Catálogo</a></li>
+          <li><a href="/buscar">Buscar</a></li>
+          <li><a href="/login">Iniciar Sesión</a></li>
+        </ul>
+      </div>
+      <div class="column is-4">
+        <h4 class="title is-6">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="#términos">Términos de Uso</a></li>
+          <li><a href="#privacidad">Política de Privacidad</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">
+      <p class="footer-credit">© {currentYear} <strong>AnimeStream</strong> • Desarrollado por <strong>danielsoftworks</strong></p>
+      <p class="footer-note">Proyecto académico • Contenido embebido de múltiples fuentes</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: rgba(26, 26, 46, 0.3);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(162, 155, 254, 0.1);
+    padding: 4rem 1.5rem 2rem;
+    color: #b0b0c0;
+  }
+  .footer-brand .title {
+    color: #a29bfe;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .footer .title {
+    color: #f0f0ff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .footer a {
+    color: #b0b0c0;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .footer a:hover {
+    color: #a29bfe;
+  }
+  .footer-links {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-links li {
+    margin-bottom: 0.75rem;
+  }
+  .footer-links a {
+    display: inline-block;
+  }
+  .footer-links a:hover {
+    transform: translateX(4px);
+  }
+  .footer-divider {
+    background: rgba(162, 155, 254, 0.1);
+    border: none;
+    height: 1px;
+    margin: 2rem 0;
+  }
+  .footer-bottom {
+    text-align: center;
+  }
+  .footer-credit {
+    font-size: 0.95rem;
+    color: #b0b0c0;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .footer-credit strong {
+    color: #f0f0ff;
+  }
+  .footer-note {
+    font-size: 0.85rem;
+    color: #8080a0;
+    letter-spacing: 0.2px;
+  }
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(162, 155, 254, 0.1);
+    border: 1px solid rgba(162, 155, 254, 0.2);
+    color: #a29bfe;
+    transition: all 0.3s ease;
+  }
+  .social-link:hover {
+    background: rgba(162, 155, 254, 0.2);
+    border-color: #a29bfe;
+    transform: translateY(-3px);
+  }
+  .social-link svg {
+    width: 20px;
+    height: 20px;
+  }
+</style>

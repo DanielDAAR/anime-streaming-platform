@@ -1,0 +1,255 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { apiUrl } from '../../services/api';
+
+let episodes: any[] = [];
+let animes: any[] = [];
+
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+
+try {
+  const [epRes, animeRes] = await Promise.all([
+    fetch(apiUrl('/episodes/latest?limit=50')),
+    fetch(apiUrl('/animes?limit=100'))
+  ]);
+
+  if (epRes.ok) {
+    const data = await epRes.json();
+    episodes = data.data || [];
+  }
+  if (animeRes.ok) {
+    const data = await animeRes.json();
+    animes = data.data || [];
+  }
+} catch (e) {
+  console.error('Error fetching episodes:', e);
+}
+
+const animeMap = new Map(animes.map(a => [a.id, a]));
+---
+
+<AdminLayout title="Gestión de Episodios">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-4">📺 Gestión de Episodios</h2>
+    </div>
+    <div class="level-right">
+      <button class="button is-primary" onclick="openEpisodeModal()">
+        <span class="icon">➕</span>
+        <span>Nuevo Episodio</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+    <div class="table-container">
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+          <tr>
+            <th>Anime</th>
+            <th>Episodio</th>
+            <th>Título</th>
+            <th>Servidores</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {episodes.map(episode => (
+            <tr data-episode-id={episode.id}>
+              <td>{animeMap.get(episode.animeId)?.title || 'Unknown'}</td>
+              <td>#{episode.number}</td>
+              <td>{episode.title}</td>
+              <td>
+                <span class="tag">{episode.servers?.length || 0} servers</span>
+              </td>
+              <td>
+                <div class="buttons are-small">
+                  <button class="button is-danger delete-episode-btn" data-id={episode.id}>
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {episodes.length === 0 && (
+      <div class="has-text-centered py-5">
+        <p class="has-text-grey">No hay episodios registrados.</p>
+      </div>
+    )}
+  </div>
+
+  <!-- Episode Modal -->
+  <div class="modal" id="episode-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Nuevo Episodio</p>
+        <button class="delete" onclick="closeEpisodeModal()"></button>
+      </header>
+      <section class="modal-card-body">
+        <form id="episode-form">
+          <div class="field">
+            <label class="label">Anime</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="episode-anime-id" required>
+                  <option value="">Seleccionar anime...</option>
+                  {animes.map(anime => (
+                    <option value={anime.id}>{anime.title}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label">Número</label>
+                <input class="input" type="number" id="episode-number" min="1" required />
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label">Duración (min)</label>
+                <input class="input" type="number" id="episode-duration" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Título</label>
+            <input class="input" type="text" id="episode-title" required />
+          </div>
+
+          <div class="field">
+            <label class="label">Descripción</label>
+            <textarea class="textarea" id="episode-description" rows="2"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="label">Servidores</label>
+            <div id="servers-list">
+              <div class="server-input box mb-2" style="background: #252542;">
+                <div class="columns">
+                  <div class="column is-4">
+                    <input class="input is-small" placeholder="Nombre" data-server-name />
+                  </div>
+                  <div class="column is-5">
+                    <input class="input is-small" placeholder="URL embed" data-server-url />
+                  </div>
+                  <div class="column is-3">
+                    <div class="select is-small is-fullwidth">
+                      <select data-server-quality>
+                        <option value="720p">720p</option>
+                        <option value="1080p">1080p</option>
+                        <option value="480p">480p</option>
+                        <option value="360p">360p</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="button is-small is-info" onclick="addServerInput()">+ Agregar Servidor</button>
+          </div>
+        </form>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary" onclick="saveEpisode()">Guardar</button>
+        <button class="button" onclick="closeEpisodeModal()">Cancelar</button>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    import { episodeApi } from '../../services/api';
+
+    (window as any).openEpisodeModal = () => {
+      document.getElementById('episode-modal')?.classList.add('is-active');
+    };
+
+    (window as any).closeEpisodeModal = () => {
+      document.getElementById('episode-modal')?.classList.remove('is-active');
+      (document.getElementById('episode-form') as HTMLFormElement)?.reset();
+    };
+
+    (window as any).addServerInput = () => {
+      const container = document.getElementById('servers-list');
+      const div = document.createElement('div');
+      div.className = 'server-input box mb-2';
+      div.style.background = '#252542';
+      div.innerHTML = `
+        <div class="columns">
+          <div class="column is-4">
+            <input class="input is-small" placeholder="Nombre" data-server-name />
+          </div>
+          <div class="column is-5">
+            <input class="input is-small" placeholder="URL embed" data-server-url />
+          </div>
+          <div class="column is-3">
+            <div class="select is-small is-fullwidth">
+              <select data-server-quality>
+                <option value="720p">720p</option>
+                <option value="1080p">1080p</option>
+                <option value="480p">480p</option>
+                <option value="360p">360p</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `;
+      container?.appendChild(div);
+    };
+
+    (window as any).saveEpisode = async () => {
+      const servers: any[] = [];
+      document.querySelectorAll('.server-input').forEach(el => {
+        const name = (el.querySelector('[data-server-name]') as HTMLInputElement)?.value;
+        const url = (el.querySelector('[data-server-url]') as HTMLInputElement)?.value;
+        const quality = (el.querySelector('[data-server-quality]') as HTMLSelectElement)?.value;
+        if (name && url) {
+          servers.push({ name, url, quality, active: servers.length === 0 });
+        }
+      });
+
+      const episodeData = {
+        animeId: (document.getElementById('episode-anime-id') as HTMLSelectElement)?.value,
+        number: parseInt((document.getElementById('episode-number') as HTMLInputElement)?.value),
+        title: (document.getElementById('episode-title') as HTMLInputElement)?.value,
+        description: (document.getElementById('episode-description') as HTMLTextAreaElement)?.value,
+        duration: parseInt((document.getElementById('episode-duration') as HTMLInputElement)?.value) || 0,
+        servers,
+      };
+
+      try {
+        await episodeApi.create(episodeData);
+        (window as any).closeEpisodeModal();
+        window.location.reload();
+      } catch (err) {
+        alert('Error al crear episodio');
+        console.error(err);
+      }
+    };
+
+    // Delete episode
+    document.querySelectorAll('.delete-episode-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar este episodio?')) return;
+        const id = btn.getAttribute('data-id');
+        try {
+          await episodeApi.delete(id!);
+          window.location.reload();
+        } catch (err) {
+          alert('Error al eliminar');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

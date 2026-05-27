@@ -1,0 +1,162 @@
+---
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <span class="logo-text">AnimeStream</span>
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a class={`navbar-item ${currentPath === '/' ? 'is-active' : ''}`} href="/">
+          <span>Inicio</span>
+        </a>
+        <a class={`navbar-item ${currentPath === '/catalogo' ? 'is-active' : ''}`} href="/catalogo">
+          <span>Catálogo</span>
+        </a>
+        <a class={`navbar-item ${currentPath === '/buscar' ? 'is-active' : ''}`} href="/buscar">
+          <span>Buscar</span>
+        </a>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons" id="auth-buttons">
+            <a class="button is-primary" href="/login">
+              <span>Iniciar Sesión</span>
+            </a>
+            <a class="button is-light" href="/registro">
+              <span>Registrarse</span>
+            </a>
+          </div>
+          <div class="buttons is-hidden" id="user-menu">
+            <a class="button is-primary" href="/admin/dashboard" id="admin-link" style="display: none;">
+              <span>Admin</span>
+            </a>
+            <button class="button is-light" id="logout-btn">
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    background: rgba(26, 26, 46, 0.3) !important;
+    backdrop-filter: blur(10px);
+    border: none;
+    border-bottom: 1px solid rgba(162, 155, 254, 0.1);
+  }
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #a29bfe;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .logo-text:hover {
+    text-shadow: 0 0 20px rgba(162, 155, 254, 0.3);
+  }
+  .navbar-item {
+    color: #f0f0ff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+  .navbar-item:hover {
+    color: #a29bfe;
+  }
+  .navbar-item.is-active {
+    color: #a29bfe;
+  }
+  .navbar-item.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #a29bfe;
+  }
+  .button {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .button.is-primary {
+    background: linear-gradient(135deg, rgba(162, 155, 254, 0.2), rgba(108, 92, 231, 0.15));
+    border: 1px solid rgba(162, 155, 254, 0.3);
+    color: #a29bfe;
+  }
+  .button.is-primary:hover {
+    background: linear-gradient(135deg, rgba(162, 155, 254, 0.3), rgba(108, 92, 231, 0.25));
+    border-color: #a29bfe;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(162, 155, 254, 0.15);
+  }
+  .button.is-light {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(162, 155, 254, 0.2);
+    color: #f0f0ff;
+  }
+  .button.is-light:hover {
+    background: rgba(162, 155, 254, 0.1);
+    border-color: #a29bfe;
+    color: #a29bfe;
+  }
+</style>
+
+<script>
+  // Toggle mobile menu
+  document.addEventListener('DOMContentLoaded', () => {
+    const burger = document.querySelector('.navbar-burger');
+    const menu = document.querySelector('.navbar-menu');
+
+    if (burger && menu) {
+      burger.addEventListener('click', () => {
+        burger.classList.toggle('is-active');
+        menu.classList.toggle('is-active');
+      });
+    }
+  });
+
+  // Auth state
+  import { authService } from '../services/auth';
+
+  const authButtons = document.getElementById('auth-buttons');
+  const userMenu = document.getElementById('user-menu');
+  const adminLink = document.getElementById('admin-link');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  if (authService.isAuthenticated()) {
+    authButtons?.classList.add('is-hidden');
+    userMenu?.classList.remove('is-hidden');
+
+    if (authService.isAdmin() && adminLink) {
+      adminLink.style.display = 'inline-flex';
+    }
+  }
+
+  logoutBtn?.addEventListener('click', () => {
+    authService.clearAuth();
+    window.location.href = '/';
+  });
+</script>

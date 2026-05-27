@@ -1,0 +1,1 @@
+import{c as r}from"./api.BhIwWj_B.js";import"./auth.h-v8t-lg.js";import"./hoisted.jgWgEjQ_.js";document.querySelectorAll(".delete-comment-btn").forEach(e=>{e.addEventListener("click",async()=>{if(!confirm("¿Eliminar este comentario?"))return;const t=e.getAttribute("data-id");try{await r.delete(t),window.location.reload()}catch{alert("Error al eliminar comentario")}})});

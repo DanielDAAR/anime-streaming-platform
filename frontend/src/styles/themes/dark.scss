@@ -1,0 +1,217 @@
+// ============================================
+// TEMA OSCURO - IMPLEMENTACIÓN MODERNA
+// ============================================
+// Este archivo contiene estilos adicionales para el tema oscuro
+
+@use '../config/variables' as *;
+@use '../config/typography' as typography;
+
+// ============================================
+// MODO OSCURO EXPLÍCITO
+// ============================================
+// Compatible con prefers-color-scheme
+
+[data-theme='dark'] {
+  :root {
+    color-scheme: dark;
+  }
+  
+  // Variables CSS nativas para acceso desde JS si lo necesitas
+  :root {
+    --color-bg-primary: #{$color-bg-primary};
+    --color-bg-secondary: #{$color-bg-secondary};
+    --color-text-primary: #{$color-text-primary};
+    --color-text-secondary: #{$color-text-secondary};
+    --color-brand-primary: #{$color-brand-primary};
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+  
+  :root {
+    --color-bg-primary: #{$color-bg-primary};
+    --color-bg-secondary: #{$color-bg-secondary};
+    --color-text-primary: #{$color-text-primary};
+    --color-text-secondary: #{$color-text-secondary};
+    --color-brand-primary: #{$color-brand-primary};
+  }
+}
+
+// ============================================
+// ELEMENTO CON ATRIBUTO data-theme='light' (opcional para futuro)
+// ============================================
+// Si quieres permitir modo claro en el futuro
+
+[data-theme='light'] {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-brand-primary: #6c5ce7;
+}
+
+// ============================================
+// ESTILOS OSCUROS ESPECÍFICOS
+// ============================================
+
+// Componentes con efecto glassmorphism
+.card {
+  @include typography.glass(10px, $color-surface-base, 1);
+  border: 1px solid $color-border-primary;
+  
+  &:hover {
+    border-color: $color-border-secondary;
+    background-color: color-mix(in srgb, $color-surface-base, $color-surface-hover 20%);
+  }
+}
+
+.box {
+  @include typography.glass(10px, $color-surface-base, 1);
+  border: 1px solid $color-border-primary;
+}
+
+.notification {
+  @include typography.glass(8px, $color-surface-base, 0.95);
+  border-left: 4px solid $color-brand-primary;
+}
+
+// Modal mejorado
+.modal-background {
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(5px);
+}
+
+// ============================================
+// INPUTS EN TEMA OSCURO
+// ============================================
+
+.input,
+.textarea,
+.select select {
+  background-color: rgba(26, 26, 46, 0.5);
+  border: 1px solid $color-border-primary;
+  color: $color-text-primary;
+  @include typography.transition(all);
+  
+  &::placeholder {
+    color: $color-text-tertiary;
+  }
+  
+  &:hover {
+    border-color: $color-border-secondary;
+  }
+  
+  &:focus,
+  &:focus-visible {
+    border-color: $color-brand-primary;
+    box-shadow: 0 0 0 3px color-mix(in srgb, $color-brand-primary 10%, transparent);
+  }
+  
+  &:disabled {
+    background-color: $color-surface-base;
+    color: $color-text-tertiary;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================
+// BOTONES MEJORADOS
+// ============================================
+
+.button {
+  @include typography.transition(all);
+  border: 1px solid $color-border-secondary;
+  
+  &.is-primary {
+    background-color: $color-brand-primary;
+    border-color: $color-brand-primary;
+    color: #000;
+    font-weight: 600;
+    
+    &:hover {
+      background-color: $color-brand-secondary;
+      border-color: $color-brand-secondary;
+    }
+    
+    &:focus-visible {
+      outline: 2px solid $color-brand-secondary;
+      outline-offset: 2px;
+    }
+  }
+  
+  &.is-text {
+    color: $color-brand-primary;
+    
+    &:hover {
+      background-color: rgba(162, 155, 254, 0.1);
+    }
+  }
+}
+
+// ============================================
+// ENLACES
+// ============================================
+
+a {
+  color: $color-brand-primary;
+  
+  &:hover {
+    color: $color-brand-secondary;
+  }
+  
+  &:visited {
+    color: darken-modern($color-brand-primary, 15%);
+  }
+}
+
+// ============================================
+// EFECTO HOVER GLOBAL
+// ============================================
+
+.clickable,
+button,
+a,
+[role='button'] {
+  @include typography.transition(all);
+  
+  &:hover:not(:disabled) {
+    @include typography.hover-state(lift);
+  }
+}
+
+// ============================================
+// GLOW EFFECT - ELEMENTOS ESPECIALES
+// ============================================
+
+.has-glow {
+  @include typography.glow($color-brand-primary, 25px);
+}
+
+.has-glow-accent {
+  @include typography.glow($color-brand-accent, 30px);
+}
+
+// ============================================
+// GRADIENT TEXT - Para títulos especiales
+// ============================================
+
+.has-gradient-text {
+  @include typography.gradient-text($color-brand-primary, $color-brand-secondary);
+}
+
+// ============================================
+// REDUCIR MOVIMIENTO
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

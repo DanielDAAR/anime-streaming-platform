@@ -1,0 +1,58 @@
+---
+interface Props {
+  headers: string[];
+  rows: any[];
+  actions?: boolean;
+}
+
+const { headers, rows, actions = true } = Astro.props;
+---
+
+<div class="table-container">
+  <table class="table is-fullwidth is-hoverable">
+    <thead>
+      <tr>
+        {headers.map(header => (
+          <th>{header}</th>
+        ))}
+        {actions && <th>Acciones</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(row => (
+        <tr data-id={row.id}>
+          <slot name="row" {row} />
+          {actions && (
+            <td>
+              <div class="buttons are-small">
+                <button class="button is-info edit-btn" data-id={row.id}>
+                  <span>✏️</span>
+                </button>
+                <button class="button is-danger delete-btn" data-id={row.id}>
+                  <span>🗑️</span>
+                </button>
+              </div>
+            </td>
+          )}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table {
+    background: transparent;
+  }
+  .table th {
+    color: #a29bfe;
+    border-bottom: 2px solid #2d2d44;
+  }
+  .table td {
+    border-bottom: 1px solid #2d2d44;
+    color: #e0e0e0;
+  }
+  .table tbody tr:hover {
+    background: #252542;
+  }
+</style>

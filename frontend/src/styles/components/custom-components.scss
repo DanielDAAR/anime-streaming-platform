@@ -1,0 +1,381 @@
+// ============================================
+// COMPONENTES PERSONALIZADOS - CSS MODULES
+// ============================================
+// Este archivo contiene componentes Astro/CSS personalizados que extienden Bulma
+
+@use '../config/variables' as *;
+@use '../config/typography' as typography;
+@use '../config/breakpoints' as *;
+
+// ============================================
+// TARJETA DE ANIME - Componente personalizado
+// ============================================
+
+.anime-card {
+  @include typography.glass(10px, $color-surface-base, 1);
+  border: 1px solid $color-border-primary;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  @include typography.transition(all);
+  cursor: pointer;
+  
+  &:hover {
+    border-color: $color-border-hover;
+    background-color: color-mix(in srgb, $color-surface-base, $color-surface-hover 30%);
+    @include typography.glow($color-brand-primary, 20px);
+  }
+  
+  .anime-card__image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 9/12;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      @include typography.transition(transform);
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(10, 10, 15, 0.8) 100%);
+      z-index: 1;
+    }
+  }
+  
+  &:hover .anime-card__image img {
+    transform: scale(1.05);
+  }
+  
+  .anime-card__content {
+    padding: $space-md;
+    
+    .anime-card__title {
+      @include typography.heading($font-size-base, 600);
+      margin-bottom: $space-sm;
+      @include typography.text-clamp(2);
+    }
+    
+    .anime-card__meta {
+      display: flex;
+      gap: $space-sm;
+      font-size: $font-size-small;
+      color: $color-text-secondary;
+      margin-bottom: $space-md;
+    }
+  }
+}
+
+// ============================================
+// EPISODE CARD
+// ============================================
+
+.episode-card {
+  @include typography.glass(8px, $color-surface-base, 0.8);
+  border: 1px solid $color-border-primary;
+  border-radius: $radius-md;
+  padding: $space-md;
+  @include typography.transition(all);
+  display: flex;
+  gap: $space-md;
+  
+  &:hover {
+    border-color: $color-brand-primary;
+    background-color: $color-surface-hover;
+  }
+  
+  .episode-card__number {
+    font-weight: 700;
+    color: $color-brand-primary;
+    min-width: 3ch;
+  }
+  
+  .episode-card__info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .episode-card__title {
+    font-weight: 600;
+    color: $color-text-primary;
+    margin-bottom: $space-xs;
+    @include typography.text-clamp(1);
+  }
+  
+  .episode-card__description {
+    font-size: $font-size-small;
+    color: $color-text-secondary;
+    @include typography.text-clamp(2);
+  }
+}
+
+// ============================================
+// COMMENT SECTION
+// ============================================
+
+.comment-section {
+  margin-top: $space-2xl;
+  
+  .comment-header {
+    @include typography.flex-center(row, space-between, center);
+    margin-bottom: $space-lg;
+    gap: $space-md;
+    
+    @include mq-max('tablet') {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
+  .comment-item {
+    padding: $space-lg;
+    border-left: 3px solid $color-brand-primary;
+    background-color: $color-surface-base;
+    border-radius: 0 $radius-md $radius-md 0;
+    margin-bottom: $space-lg;
+    
+    .comment-author {
+      font-weight: 600;
+      color: $color-brand-primary;
+      margin-bottom: $space-xs;
+    }
+    
+    .comment-date {
+      font-size: $font-size-small;
+      color: $color-text-tertiary;
+    }
+    
+    .comment-text {
+      margin-top: $space-md;
+      color: $color-text-primary;
+      line-height: $line-height-loose;
+    }
+  }
+}
+
+// ============================================
+// BADGE / LABEL - Personalizados
+// ============================================
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  background-color: $color-surface-active;
+  border: 1px solid $color-border-secondary;
+  border-radius: $radius-full;
+  font-size: $font-size-small;
+  font-weight: 600;
+  color: $color-text-primary;
+  white-space: nowrap;
+  
+  &.is-primary {
+    background-color: color-mix(in srgb, $color-brand-primary 20%, transparent);
+    border-color: $color-brand-primary;
+    color: $color-brand-primary;
+  }
+  
+  &.is-success {
+    background-color: color-mix(in srgb, $color-success 20%, transparent);
+    border-color: $color-success;
+    color: $color-success;
+  }
+  
+  &.is-danger {
+    background-color: color-mix(in srgb, $color-danger 20%, transparent);
+    border-color: $color-danger;
+    color: $color-danger;
+  }
+}
+
+// ============================================
+// NAVIGATION ENHANCEMENTS
+// ============================================
+
+.navbar-custom {
+  @include typography.glass(10px, rgba(26, 26, 46, 0.3), 1);
+  border-bottom: 1px solid $color-border-primary;
+  backdrop-filter: blur(10px);
+  
+  .navbar-brand {
+    gap: $space-md;
+  }
+  
+  .navbar-item {
+    @include typography.transition(all);
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: $color-brand-primary;
+      @include typography.transition(width);
+    }
+    
+    &:hover,
+    &.is-active {
+      color: $color-brand-primary;
+      
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ============================================
+// ADMIN DASHBOARD - Específicos
+// ============================================
+
+.admin-sidebar {
+  @include typography.glass(8px, $color-surface-base, 0.8);
+  border-right: 1px solid $color-border-primary;
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  
+  .sidebar-item {
+    @include typography.transition(all);
+    padding: $space-md;
+    border-left: 3px solid transparent;
+    color: $color-text-secondary;
+    
+    &:hover,
+    &.is-active {
+      border-left-color: $color-brand-primary;
+      background-color: color-mix(in srgb, $color-brand-primary 10%, transparent);
+      color: $color-brand-primary;
+    }
+  }
+}
+
+.stats-card {
+  @include typography.glass(10px, $color-surface-base, 1);
+  border: 1px solid $color-border-primary;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  
+  .stats-card__label {
+    font-size: $font-size-small;
+    color: $color-text-secondary;
+    margin-bottom: $space-sm;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+  }
+  
+  .stats-card__value {
+    @include typography.heading($font-size-2xl, 700);
+    margin-bottom: $space-md;
+  }
+  
+  .stats-card__change {
+    font-size: $font-size-small;
+    font-weight: 600;
+    
+    &.is-positive {
+      color: $color-success;
+    }
+    
+    &.is-negative {
+      color: $color-danger;
+    }
+  }
+}
+
+// ============================================
+// DATA TABLE - Mejoras
+// ============================================
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  thead {
+    background-color: $color-surface-hover;
+    border-bottom: 2px solid $color-border-secondary;
+    
+    th {
+      padding: $space-md;
+      text-align: left;
+      font-weight: 700;
+      color: $color-brand-primary;
+      user-select: none;
+      cursor: default;
+      
+      &.sortable {
+        cursor: pointer;
+        @include typography.transition(color);
+        
+        &:hover {
+          color: $color-brand-secondary;
+        }
+      }
+    }
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid $color-border-primary;
+    @include typography.transition(all);
+    
+    &:hover {
+      background-color: $color-surface-hover;
+    }
+    
+    td {
+      padding: $space-md;
+      color: $color-text-primary;
+    }
+  }
+}
+
+// ============================================
+// LOADING STATES
+// ============================================
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    $color-surface-base 25%,
+    $color-surface-hover 50%,
+    $color-surface-base 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ============================================
+// RESPONSIVE UTILITIES
+// ============================================
+
+@include mq('tablet') {
+  .hide-tablet {
+    display: none;
+  }
+}
+
+@include mq-max('tablet') {
+  .show-mobile {
+    display: block;
+  }
+  
+  .hide-mobile {
+    display: none;
+  }
+}

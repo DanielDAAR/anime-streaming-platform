@@ -1,0 +1,107 @@
+---
+import MainLayout from './MainLayout.astro';
+import AdminSidebar from '../components/admin/AdminSidebar.astro';
+
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect('/login');
+}
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Panel de Administración' } = Astro.props;
+---
+
+<MainLayout title={`${title} | Admin`} description="Panel de administración de AnimeStream">
+  <div class="admin-layout">
+    <div class="columns is-gapless">
+      <div class="column is-2-desktop is-3-tablet admin-sidebar-wrapper">
+        <AdminSidebar />
+      </div>
+      <div class="column admin-content">
+        <header class="admin-header">
+          <div class="container-fluid">
+            <div class="level">
+              <div class="level-left">
+                <h1 class="title is-4">{title}</h1>
+              </div>
+              <div class="level-right">
+                <div class="user-menu">
+                  <span class="icon">👤</span>
+                  <span id="admin-username">Admin</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main class="admin-main">
+          <slot />
+        </main>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .admin-layout {
+    min-height: 100vh;
+  }
+  .admin-sidebar-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .admin-content {
+    background: #0f0f1a;
+    min-height: 100vh;
+  }
+  .admin-header {
+    background: #1a1a2e;
+    border-bottom: 1px solid #2d2d44;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .admin-header .title {
+    color: #e0e0e0;
+    margin: 0;
+  }
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #a0a0b0;
+  }
+  .admin-main {
+    padding: 2rem;
+  }
+  @media (max-width: 768px) {
+    .admin-sidebar-wrapper {
+      position: relative;
+      height: auto;
+    }
+    .admin-main {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // Check admin access
+  import { authService } from '../services/auth';
+
+  if (!authService.isAdmin()) {
+    window.location.href = '/login';
+  }
+
+  const user = authService.getUser();
+  if (user) {
+    const usernameEl = document.getElementById('admin-username');
+    if (usernameEl) usernameEl.textContent = user.username;
+  }
+</script>

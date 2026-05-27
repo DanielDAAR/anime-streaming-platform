@@ -1,0 +1,217 @@
+// ============================================
+// CONFIGURACIÓN DE TEMA - BULMA OVERRIDES
+// ============================================
+// Este archivo configura TODAS las variables de Bulma ANTES de importarlo
+// Importar con: @use 'config/theme' as *
+// IMPORTANTE: Este archivo se importa ANTES de Bulma en vendor/bulma.scss
+
+@use 'variables' as *;
+
+// ============================================
+// VARIABLES GENERALES DE BULMA
+// ============================================
+
+// Tipografía
+$family-primary: $font-family-primary;
+$family-code: $font-family-mono;
+$family-sans-serif: $font-family-primary;
+$family-monospace: $font-family-mono;
+
+// Tamaños
+$body-font-size: $font-size-base;
+$body-line-height: $line-height-normal;
+
+// ============================================
+// COLORES GENERALES
+// ============================================
+
+$body-background-color: $color-bg-primary;
+$body-color: $color-text-primary;
+
+// Links
+$link: $color-brand-primary;
+$link-hover: $color-brand-secondary;
+$link-focus: $color-brand-secondary;
+$link-focus-border: $color-brand-primary;
+$link-visited: darken-modern($color-brand-primary, 20%);
+
+// ============================================
+// COMPONENTES - CARD
+// ============================================
+
+$card-background-color: transparent;
+$card-color: $color-text-primary;
+$card-shadow: none;
+$card-radius: $radius-lg;
+$card-padding: $space-lg;
+
+// ============================================
+// COMPONENTES - NAVBAR
+// ============================================
+
+$navbar-background-color: rgba(26, 26, 46, 0.3);
+$navbar-color: $color-text-primary;
+$navbar-item-color: $color-text-secondary;
+$navbar-item-hover-color: $color-brand-primary;
+$navbar-item-hover-background-color: rgba(26, 26, 46, 0.6);
+$navbar-item-active-color: $color-brand-primary;
+$navbar-item-active-background-color: rgba(26, 26, 46, 0.8);
+$navbar-divider-background-color: $color-border-primary;
+
+// ============================================
+// COMPONENTES - INPUT / FORM
+// ============================================
+
+$input-background-color: transparent;
+$input-border-color: $color-border-primary;
+$input-color: $color-text-primary;
+$input-placeholder-color: $color-text-tertiary;
+$input-focus-border-color: $color-brand-primary;
+$input-focus-box-shadow-color: transparent;
+$input-disabled-background-color: $color-surface-base;
+$input-disabled-border-color: $color-border-primary;
+$input-disabled-color: $color-text-tertiary;
+
+$textarea-background-color: $input-background-color;
+$textarea-border-color: $input-border-color;
+$textarea-color: $input-color;
+
+// ============================================
+// COMPONENTES - SELECT / BUTTON
+// ============================================
+
+$select-background-color: $input-background-color;
+$select-border-color: $input-border-color;
+$select-color: $input-color;
+
+$button-background-color: $color-surface-base;
+$button-border-color: $color-border-secondary;
+$button-border-width: 1px;
+$button-color: $color-text-primary;
+$button-hover-border-color: $color-border-hover;
+$button-hover-color: $color-text-primary;
+$button-focus-border-color: $color-brand-primary;
+$button-active-border-color: $color-brand-primary;
+$button-active-color: $color-brand-primary;
+
+// Botón primario (creamos variaciones modernas)
+$button-text-color: $color-text-secondary;
+
+// ============================================
+// COMPONENTES - TABLE
+// ============================================
+
+$table-background-color: $color-surface-base;
+$table-color: $color-text-primary;
+$table-cell-border: 1px solid $color-border-primary;
+$table-cell-padding: $space-md;
+$table-head-background-color: $color-surface-hover;
+$table-head-cell-border-width: 1px;
+$table-head-cell-color: $color-brand-primary;
+$table-body-last-row-border-bottom-width: 1px;
+$table-row-hover-background-color: $color-surface-active;
+$table-striped-row-even-background-color: $color-surface-active;
+$table-striped-row-even-hover-background-color: $color-surface-active;
+
+// ============================================
+// COMPONENTES - MODAL
+// ============================================
+
+$modal-background-background-color: rgba(0, 0, 0, 0.95);
+$modal-content-background-color: $color-surface-base;
+$modal-content-border-color: $color-border-secondary;
+$modal-content-width: 640px;
+$modal-card-head-background-color: $color-surface-hover;
+$modal-card-head-border-bottom: 1px solid $color-border-secondary;
+
+// ============================================
+// COMPONENTES - BOX / NOTIFICATION
+// ============================================
+
+$box-background-color: $color-surface-base;
+$box-color: $color-text-primary;
+$box-radius: $radius-lg;
+$box-shadow: none;
+$box-padding: $space-lg;
+
+$notification-background-color: $color-surface-base;
+$notification-padding: $space-lg;
+$notification-radius: $radius-lg;
+
+// ============================================
+// COMPONENTES - TABS
+// ============================================
+
+$tabs-border-bottom-color: $color-border-primary;
+$tabs-border-bottom-style: solid;
+$tabs-border-bottom-width: 1px;
+$tabs-link-color: $color-text-secondary;
+$tabs-link-active-border-bottom-color: $color-brand-primary;
+$tabs-link-active-color: $color-brand-primary;
+$tabs-toggle-link-border-color: $color-border-secondary;
+$tabs-toggle-link-border-width: 1px;
+
+// ============================================
+// COMPONENTES - PAGINATION
+// ============================================
+
+$pagination-background-color: $color-surface-base;
+$pagination-border-color: $color-border-secondary;
+$pagination-color: $color-text-secondary;
+$pagination-current-background-color: $color-brand-primary;
+$pagination-current-border-color: $color-brand-primary;
+$pagination-current-color: #fff;
+$pagination-disabled-background-color: $color-surface-base;
+$pagination-disabled-border-color: $color-border-primary;
+$pagination-disabled-color: $color-text-tertiary;
+$pagination-hover-border-color: $color-border-hover;
+$pagination-hover-color: $color-brand-primary;
+
+// ============================================
+// COMPONENTES - BREADCRUMB / TAGS
+// ============================================
+
+$breadcrumb-item-color: $color-text-secondary;
+$breadcrumb-item-active-color: $color-brand-primary;
+$breadcrumb-item-padding-vertical: 0;
+$breadcrumb-item-padding-horizontal: 0.5em;
+
+$tag-background-color: $color-surface-hover;
+$tag-color: $color-text-primary;
+$tag-radius: $radius-md;
+
+// ============================================
+// COMPONENTES - LABEL
+// ============================================
+
+$label-color: $color-text-primary;
+$label-weight: 600;
+
+// ============================================
+// TEXTOS - TITLES / SUBTITLES
+// ============================================
+
+$title-color: $color-text-primary;
+$title-family: $font-family-primary;
+$title-line-height: $line-height-tight;
+$title-weight: 700;
+
+$subtitle-color: $color-text-secondary;
+$subtitle-family: $font-family-primary;
+$subtitle-line-height: $line-height-normal;
+$subtitle-weight: 500;
+
+// ============================================
+// HELPERS - SPACING / DISPLAY / etc
+// ============================================
+
+$content-heading-color: $color-text-primary;
+$content-heading-font-weight: 700;
+$content-heading-line-height: $line-height-tight;
+
+// ============================================
+// ANIMACIONES
+// ============================================
+
+// Nota: Bulma usa CSS puro, no variables de animación
+// Las transiciones se añaden en base/global.scss

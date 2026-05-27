@@ -1,0 +1,26 @@
+[
+  {
+    "animeSlug": "attack-on-titan",
+    "username": "anime_fan",
+    "content": "¡Increíble primer episodio! La animación es espectacular y la historia te atrapa desde el minuto uno.",
+    "likes": 5
+  },
+  {
+    "animeSlug": "attack-on-titan",
+    "username": "usuario_demo",
+    "content": "No puedo esperar para ver el siguiente episodio. Eren es un protagonista muy interesante.",
+    "likes": 3
+  },
+  {
+    "animeSlug": "demon-slayer",
+    "username": "anime_fan",
+    "content": "Ufotable nunca decepciona con la animación. Las escenas de combate son una obra de arte.",
+    "likes": 8
+  },
+  {
+    "animeSlug": "jujutsu-kaisen",
+    "username": "usuario_demo",
+    "content": "Gojo Satoru es el mejor personaje de la serie. ¡Espero ver más de él!",
+    "likes": 12
+  }
+]

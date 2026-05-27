@@ -1,0 +1,23 @@
+---
+import type { Episode } from '../types';
+
+interface Props {
+  episode: Episode;
+  animeSlug: string;
+}
+
+const { episode, animeSlug } = Astro.props;
+---
+
+<a href={`/anime/${animeSlug}/episodio/${episode.number}`} class="episode-card">
+  <div class="is-flex is-align-items-center">
+    <span class="episode-number">#{episode.number}</span>
+    <div class="is-flex-grow-1">
+      <h4 class="title is-6 mb-1">{episode.title}</h4>
+      {episode.duration && (
+        <p class="is-size-7 has-text-grey">{episode.duration} min</p>
+      )}
+    </div>
+    <span class="icon has-text-primary">▶</span>
+  </div>
+</a>

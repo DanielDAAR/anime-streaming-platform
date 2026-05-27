@@ -1,0 +1,108 @@
+// ============================================
+// BREAKPOINTS - Responsive Design
+// ============================================
+// Importar con: @use 'config/breakpoints' as *
+
+// Bulma breakpoints (usados internamente)
+$mobile: 419px;
+$tablet: 769px;
+$desktop: 1024px;
+$widescreen: 1216px;
+$fullhd: 1408px;
+
+// Mapa para media queries personalizadas
+$breakpoints: (
+  'mobile': 320px,
+  'mobile-lg': 480px,
+  'tablet': 768px,
+  'tablet-lg': 1024px,
+  'desktop': 1200px,
+  'widescreen': 1440px,
+  'ultrawide': 1920px,
+);
+
+// ============================================
+// MEDIA QUERY MIXINS
+// ============================================
+
+/// Mixin para media query min-width
+/// @param {string} $breakpoint - Nombre del breakpoint
+/// @example
+///   @include mq('tablet') {
+///     // Estilos para tablet y arriba
+///   }
+@mixin mq($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' no existe en el mapa $breakpoints";
+  }
+}
+
+/// Mixin para media query max-width
+/// @param {string} $breakpoint - Nombre del breakpoint
+/// @example
+///   @include mq-max('desktop') {
+///     // Estilos para desktop y abajo
+///   }
+@mixin mq-max($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint) - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' no existe en el mapa $breakpoints";
+  }
+}
+
+/// Mixin para rango de breakpoints
+/// @param {string} $min - Breakpoint mínimo
+/// @param {string} $max - Breakpoint máximo
+/// @example
+///   @include mq-range('tablet', 'desktop') {
+///     // Estilos entre tablet y desktop
+///   }
+@mixin mq-range($min, $max) {
+  @if map-has-key($breakpoints, $min) and map-has-key($breakpoints, $max) {
+    @media (min-width: map-get($breakpoints, $min)) and (max-width: map-get($breakpoints, $max) - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Uno o más breakpoints no existen en el mapa $breakpoints";
+  }
+}
+
+/// Mixin para prefiere dark mode
+/// @example
+///   @include prefer-dark {
+///     // Estilos para dark mode
+///   }
+@mixin prefer-dark {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+/// Mixin para prefiere light mode
+/// @example
+///   @include prefer-light {
+///     // Estilos para light mode
+///   }
+@mixin prefer-light {
+  @media (prefers-color-scheme: light) {
+    @content;
+  }
+}
+
+/// Mixin para reduced motion
+/// @example
+///   @include reduce-motion {
+///     // Estilos sin animaciones
+///   }
+@mixin reduce-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

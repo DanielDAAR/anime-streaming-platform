@@ -1,0 +1,56 @@
+---
+const currentPath = Astro.url.pathname;
+
+const menuItems = [
+  { href: '/admin/dashboard', icon: '📊', label: 'Dashboard' },
+  { href: '/admin/animes', icon: '🎬', label: 'Gestión Animes' },
+  { href: '/admin/episodios', icon: '📺', label: 'Gestión Episodios' },
+  { href: '/admin/comentarios', icon: '💬', label: 'Moderación' },
+  { href: '/admin/usuarios', icon: '👥', label: 'Usuarios' },
+];
+---
+
+<aside class="admin-sidebar">
+  <div class="has-text-centered mb-5">
+    <span class="logo-text is-size-4">🎬 AnimeStream</span>
+    <p class="is-size-7 has-text-grey">Panel Admin</p>
+  </div>
+
+  <p class="menu-label">General</p>
+  <ul class="menu-list">
+    {menuItems.map(item => (
+      <li>
+        <a href={item.href} class={currentPath === item.href ? 'is-active' : ''}>
+          <span class="icon">{item.icon}</span>
+          <span>{item.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <p class="menu-label mt-5">Sistema</p>
+  <ul class="menu-list">
+    <li>
+      <a href="/">
+        <span class="icon">🏠</span>
+        <span>Ver Sitio</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" id="admin-logout">
+        <span class="icon">🚪</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </li>
+  </ul>
+</aside>
+
+<script>
+  document.getElementById('admin-logout')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    import('../../services/auth').then(({ authService }) => {
+      authService.clearAuth();
+      window.location.href = '/';
+    });
+  });
+</script>

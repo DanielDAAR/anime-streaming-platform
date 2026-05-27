@@ -1,0 +1,120 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import AnimeFormModal from '../../components/admin/AnimeFormModal.astro';
+import { apiUrl } from '../../services/api';
+
+let animes: any[] = [];
+let total = 0;
+
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+
+try {
+  const res = await fetch(apiUrl(`/animes?page=${page}&limit=20`));
+  if (res.ok) {
+    const data = await res.json();
+    animes = data.data || [];
+    total = data.meta?.total || 0;
+  }
+} catch (e) {
+  console.error('Error fetching animes:', e);
+}
+---
+
+<AdminLayout title="Gestión de Animes">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-4">🎬 Gestión de Animes</h2>
+    </div>
+    <div class="level-right">
+      <button class="button is-primary" onclick="openAnimeModal()">
+        <span class="icon">➕</span>
+        <span>Nuevo Anime</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="box" style="background: #1a1a2e; border: 1px solid #2d2d44;">
+    <div class="table-container">
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+          <tr>
+            <th>Poster</th>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Rating</th>
+            <th>Episodios</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {animes.map(anime => (
+            <tr data-anime-id={anime.id}>
+              <td>
+                <figure class="image is-48x48">
+                  <img src={anime.images.poster} alt={anime.title} class="is-rounded" />
+                </figure>
+              </td>
+              <td>
+                <a href={`/anime/${anime.slug}`} class="has-text-primary">{anime.title}</a>
+              </td>
+              <td>
+                <span class={`tag ${anime.status === 'ongoing' ? 'is-success' : anime.status === 'completed' ? 'is-primary' : 'is-warning'}`}>
+                  {anime.status}
+                </span>
+              </td>
+              <td>⭐ {anime.rating.toFixed(1)}</td>
+              <td>{anime.episodesCount}</td>
+              <td>
+                <div class="buttons are-small">
+                  <button class="button is-info edit-anime-btn" data-anime={JSON.stringify(anime)}>
+                    ✏️
+                  </button>
+                  <button class="button is-danger delete-anime-btn" data-id={anime.id}>
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {animes.length === 0 && (
+      <div class="has-text-centered py-5">
+        <p class="has-text-grey">No hay animes registrados.</p>
+      </div>
+    )}
+  </div>
+
+  <AnimeFormModal />
+
+  <script>
+    import { animeApi } from '../../services/api';
+
+    // Edit anime
+    document.querySelectorAll('.edit-anime-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const anime = JSON.parse(btn.getAttribute('data-anime') || '{}');
+        (window as any).editAnimeModal(anime);
+      });
+    });
+
+    // Delete anime
+    document.querySelectorAll('.delete-anime-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('¿Estás seguro de eliminar este anime?')) return;
+
+        const id = btn.getAttribute('data-id');
+        try {
+          await animeApi.delete(id!);
+          window.location.reload();
+        } catch (err) {
+          alert('Error al eliminar anime');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

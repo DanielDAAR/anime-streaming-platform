@@ -1,0 +1,359 @@
+// ============================================
+// UTILIDADES PERSONALIZADAS - Clases auxiliares
+// ============================================
+// Clases de utilidad para casos específicos (similar a Tailwind)
+
+@use '../config/variables' as *;
+@use '../config/typography' as typography;
+@use '../config/breakpoints' as *;
+
+// ============================================
+// FLEXBOX / GRID UTILITIES
+// ============================================
+
+.flex-center {
+  @include typography.flex-center();
+}
+
+.flex-between {
+  @include typography.flex-center(row, space-between);
+}
+
+.flex-around {
+  @include typography.flex-center(row, space-around);
+}
+
+.flex-col {
+  @include typography.flex-center(column);
+}
+
+.grid-2 {
+  @include typography.grid-center(2);
+}
+
+.grid-3 {
+  @include typography.grid-center(3);
+}
+
+.grid-4 {
+  @include typography.grid-center(4);
+}
+
+// ============================================
+// SPACING UTILITIES
+// ============================================
+
+.mt-xs { margin-top: $space-xs; }
+.mt-sm { margin-top: $space-sm; }
+.mt-md { margin-top: $space-md; }
+.mt-lg { margin-top: $space-lg; }
+.mt-xl { margin-top: $space-xl; }
+
+.mb-xs { margin-bottom: $space-xs; }
+.mb-sm { margin-bottom: $space-sm; }
+.mb-md { margin-bottom: $space-md; }
+.mb-lg { margin-bottom: $space-lg; }
+.mb-xl { margin-bottom: $space-xl; }
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.p-md {
+  padding: $space-md;
+}
+
+.p-lg {
+  padding: $space-lg;
+}
+
+.gap-md {
+  gap: $space-md;
+}
+
+.gap-lg {
+  gap: $space-lg;
+}
+
+// ============================================
+// TEXT UTILITIES
+// ============================================
+
+.text-primary {
+  color: $color-text-primary;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
+
+.text-tertiary {
+  color: $color-text-tertiary;
+}
+
+.text-disabled {
+  color: $color-text-disabled;
+}
+
+.text-brand {
+  color: $color-brand-primary;
+}
+
+.text-success {
+  color: $color-success;
+}
+
+.text-danger {
+  color: $color-danger;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-truncate {
+  @include typography.text-truncate();
+}
+
+.text-clamp-2 {
+  @include typography.text-clamp(2);
+}
+
+.text-clamp-3 {
+  @include typography.text-clamp(3);
+}
+
+// ============================================
+// FONT UTILITIES
+// ============================================
+
+.font-weight-400 {
+  font-weight: 400;
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.font-weight-700 {
+  font-weight: 700;
+}
+
+.font-mono {
+  font-family: $font-family-mono;
+}
+
+.text-sm {
+  font-size: $font-size-small;
+}
+
+.text-base {
+  font-size: $font-size-base;
+}
+
+.text-lg {
+  font-size: $font-size-large;
+}
+
+.text-xl {
+  font-size: $font-size-xl;
+}
+
+// ============================================
+// BACKGROUND UTILITIES
+// ============================================
+
+.bg-primary {
+  background-color: $color-bg-primary;
+}
+
+.bg-secondary {
+  background-color: $color-bg-secondary;
+}
+
+.bg-surface {
+  background-color: $color-surface-base;
+}
+
+.bg-surface-hover {
+  background-color: $color-surface-hover;
+}
+
+.bg-brand {
+  background-color: $color-brand-primary;
+  color: #000;
+}
+
+// ============================================
+// BORDER UTILITIES
+// ============================================
+
+.border {
+  border: 1px solid $color-border-primary;
+}
+
+.border-top {
+  border-top: 1px solid $color-border-primary;
+}
+
+.border-bottom {
+  border-bottom: 1px solid $color-border-primary;
+}
+
+.rounded-sm {
+  border-radius: $radius-sm;
+}
+
+.rounded-md {
+  border-radius: $radius-md;
+}
+
+.rounded-lg {
+  border-radius: $radius-lg;
+}
+
+.rounded-full {
+  border-radius: $radius-full;
+}
+
+// ============================================
+// SHADOW UTILITIES
+// ============================================
+
+.shadow-sm {
+  box-shadow: $shadow-sm;
+}
+
+.shadow-md {
+  box-shadow: $shadow-md;
+}
+
+.shadow-lg {
+  box-shadow: $shadow-lg;
+}
+
+.shadow-glow {
+  box-shadow: $shadow-glow;
+}
+
+// ============================================
+// DISPLAY UTILITIES
+// ============================================
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+// ============================================
+// POINTER UTILITIES
+// ============================================
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+// ============================================
+// TRANSITION UTILITIES
+// ============================================
+
+.transition-fast {
+  @include typography.transition(all, fast);
+}
+
+.transition-base {
+  @include typography.transition(all, base);
+}
+
+.transition-slow {
+  @include typography.transition(all, slow);
+}
+
+// ============================================
+// GRADIENT TEXT
+// ============================================
+
+.gradient-text-brand {
+  @include typography.gradient-text($color-brand-primary, $color-brand-secondary);
+}
+
+// ============================================
+// ASPECT RATIO (Moderno)
+// ============================================
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-portrait {
+  aspect-ratio: 9 / 12;
+}
+
+// ============================================
+// RESPONSIVE DISPLAY
+// ============================================
+
+@include mq-max('tablet') {
+  .hidden-mobile {
+    display: none;
+  }
+}
+
+@include mq('tablet') {
+  .hidden-tablet {
+    display: none;
+  }
+  
+  .visible-tablet {
+    display: block;
+  }
+}

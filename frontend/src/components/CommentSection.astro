@@ -1,0 +1,132 @@
+---
+import type { Comment } from '../types';
+
+interface Props {
+  animeId: string;
+  comments: Comment[];
+}
+
+const { animeId, comments } = Astro.props;
+---
+
+<div class="comment-section" data-anime-id={animeId}>
+  <h3 class="title is-4 mb-4">Comentarios</h3>
+
+  <div class="comment-form mb-5">
+    <div class="field">
+      <div class="control">
+        <textarea 
+          class="textarea" 
+          id="comment-content" 
+          placeholder="Escribe tu comentario..."
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+    <div class="field">
+      <button class="button is-primary" id="submit-comment">
+        <span>Comentar</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="comments-list">
+    {comments.length === 0 ? (
+      <div class="has-text-centered py-5">
+        <p class="has-text-grey">No hay comentarios aún. ¡Sé el primero!</p>
+      </div>
+    ) : (
+      comments.map(comment => (
+        <div class="comment-item" data-comment-id={comment.id}>
+          <div class="comment-header">
+            <div class="avatar">
+              {comment.user?.username?.charAt(0).toUpperCase() || '?'}
+            </div>
+            <div>
+              <span class="username">{comment.user?.username || 'Usuario'}</span>
+              <span class="date">{new Date(comment.createdAt).toLocaleDateString('es-ES')}</span>
+            </div>
+          </div>
+          <p class="comment-content">{comment.content}</p>
+          <div class="comment-actions">
+            <button class="like-btn" data-comment-id={comment.id}>
+              <span>👍</span>
+              <span class="likes-count">{comment.likes}</span>
+            </button>
+            <button class="reply-btn" data-comment-id={comment.id}>
+              <span>💬</span>
+              <span>Responder</span>
+            </button>
+          </div>
+
+          {comment.replies && comment.replies.length > 0 && (
+            <div class="replies">
+              {comment.replies.map(reply => (
+                <div class="reply-item comment-item" data-comment-id={reply.id}>
+                  <div class="comment-header">
+                    <div class="avatar">
+                      {reply.user?.username?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                    <div>
+                      <span class="username">{reply.user?.username || 'Usuario'}</span>
+                      <span class="date">{new Date(reply.createdAt).toLocaleDateString('es-ES')}</span>
+                    </div>
+                  </div>
+                  <p class="comment-content">{reply.content}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))
+    )}
+  </div>
+</div>
+
+<script>
+  import { commentApi } from '../services/api';
+  import { authService } from '../services/auth';
+
+  const animeId = document.querySelector('.comment-section')?.getAttribute('data-anime-id');
+
+  // Submit comment
+  document.getElementById('submit-comment')?.addEventListener('click', async () => {
+    if (!authService.isAuthenticated()) {
+      alert('Debes iniciar sesión para comentar');
+      window.location.href = '/login';
+      return;
+    }
+
+    const content = (document.getElementById('comment-content') as HTMLTextAreaElement)?.value;
+    if (!content?.trim()) return;
+
+    try {
+      await commentApi.create(animeId!, content);
+      window.location.reload();
+    } catch (err) {
+      alert('Error al crear comentario');
+    }
+  });
+
+  // Like comment
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!authService.isAuthenticated()) {
+        alert('Debes iniciar sesión');
+        return;
+      }
+
+      const commentId = btn.getAttribute('data-comment-id');
+      try {
+        await commentApi.like(commentId!);
+        const countEl = btn.querySelector('.likes-count');
+        if (countEl) {
+          countEl.textContent = String(parseInt(countEl.textContent || '0') + 1);
+        }
+      } catch (err) {
+        console.error('Error liking comment:', err);
+      }
+    });
+  });
+</script>

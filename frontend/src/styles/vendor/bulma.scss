@@ -1,0 +1,42 @@
+// ============================================
+// CONFIGURACIÓN Y IMPORTACIÓN DE BULMA
+// ============================================
+// Este archivo importa Bulma con la configuración correcta
+// Importar en index.scss con: @use 'vendor/bulma'
+
+@use '../config/theme' as *;
+
+// ============================================
+// IMPORTACIÓN DE BULMA - MODERNO @USE
+// ============================================
+// Importamos solo lo que necesitamos
+// Evitamos @import deprecated y warnings
+
+// ORDEN IMPORTANTE:
+// 1. Utilities (funciones y variables)
+// 2. Base (reset, tipografía global)
+// 3. Elements (estilos básicos de elementos)
+// 4. Form (inputs, buttons)
+// 5. Components (componentes complejos)
+// 6. Grid (layout)
+// 7. Helpers (clases de utilidad)
+// 8. Layout (layout containers)
+
+// Nota: Bulma usa @import internamente, pero es su responsabilidad
+// Nosotros usamos @use para la integración
+
+@import '../../../node_modules/bulma/sass/utilities/_all.sass';
+@import '../../../node_modules/bulma/sass/base/_all.sass';
+@import '../../../node_modules/bulma/sass/elements/_all.sass';
+@import '../../../node_modules/bulma/sass/form/_all.sass';
+@import '../../../node_modules/bulma/sass/components/_all.sass';
+@import '../../../node_modules/bulma/sass/grid/_all.sass';
+@import '../../../node_modules/bulma/sass/helpers/_all.sass';
+@import '../../../node_modules/bulma/sass/layout/_all.sass';
+
+// ============================================
+// BULMA ENHANCEMENTS - Mejoras modernas
+// ============================================
+
+/// Aseguramos que estas variables se exportan si alguien las necesita
+/// (Esta es una buena práctica con @use)

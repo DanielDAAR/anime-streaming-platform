@@ -1,0 +1,23 @@
+[
+  {
+    "username": "admin",
+    "email": "admin@animestream.com",
+    "password": "admin123",
+    "role": "admin",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
+  },
+  {
+    "username": "usuario_demo",
+    "email": "user@animestream.com",
+    "password": "user123",
+    "role": "user",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=user"
+  },
+  {
+    "username": "anime_fan",
+    "email": "fan@animestream.com",
+    "password": "fan123",
+    "role": "user",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=fan"
+  }
+]

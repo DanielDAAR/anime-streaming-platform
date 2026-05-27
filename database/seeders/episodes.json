@@ -1,0 +1,94 @@
+[
+  {
+    "animeSlug": "attack-on-titan",
+    "number": 1,
+    "title": "A ti, 2000 años en el futuro",
+    "description": "Eren Yeager y Mikasa Ackerman presencian la destrucción de su ciudad natal por un Titán Colosal.",
+    "servers": [
+      {
+        "name": "Server 1",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "1080p",
+        "active": true
+      },
+      {
+        "name": "Server 2",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "720p",
+        "active": false
+      }
+    ],
+    "duration": 24,
+    "thumbnail": "https://cdn.myanimelist.net/images/anime/10/47347.jpg"
+  },
+  {
+    "animeSlug": "attack-on-titan",
+    "number": 2,
+    "title": "Ese día",
+    "description": "Los cadetes comienzan su entrenamiento militar bajo la supervisión del Sargento Keith Shadis.",
+    "servers": [
+      {
+        "name": "Server 1",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "1080p",
+        "active": true
+      }
+    ],
+    "duration": 24,
+    "thumbnail": "https://cdn.myanimelist.net/images/anime/10/47347.jpg"
+  },
+  {
+    "animeSlug": "demon-slayer",
+    "number": 1,
+    "title": "Crueldad",
+    "description": "Tanjiro descubre que su familia ha sido masacrada por un demonio y su hermana Nezuko ha sido convertida.",
+    "servers": [
+      {
+        "name": "Server 1",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "1080p",
+        "active": true
+      },
+      {
+        "name": "Server 2",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "720p",
+        "active": false
+      }
+    ],
+    "duration": 23,
+    "thumbnail": "https://cdn.myanimelist.net/images/anime/1286/99889.jpg"
+  },
+  {
+    "animeSlug": "jujutsu-kaisen",
+    "number": 1,
+    "title": "Ryomen Sukuna",
+    "description": "Yuji Itadori consume un dedo maldito para salvar a sus amigos, convirtiéndose en el recipiente de Sukuna.",
+    "servers": [
+      {
+        "name": "Server 1",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "1080p",
+        "active": true
+      }
+    ],
+    "duration": 23,
+    "thumbnail": "https://cdn.myanimelist.net/images/anime/1171/109222.jpg"
+  },
+  {
+    "animeSlug": "spy-x-family",
+    "number": 1,
+    "title": "Operación Strix",
+    "description": "Twilight recibe la misión de crear una familia falsa para infiltrarse en la escuela Eden.",
+    "servers": [
+      {
+        "name": "Server 1",
+        "url": "https://www.youtube.com/embed/LHDIoL4YMkY",
+        "quality": "1080p",
+        "active": true
+      }
+    ],
+    "duration": 24,
+    "thumbnail": "https://cdn.myanimelist.net/images/anime/1441/122795.jpg"
+  }
+]
