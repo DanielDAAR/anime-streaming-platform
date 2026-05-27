@@ -39,11 +39,18 @@ func setupAuthRoutes(api *gin.RouterGroup) {
 func setupAnimeRoutes(api *gin.RouterGroup) {
 	anime := api.Group("/animes")
 	animeController := controllers.NewAnimeController()
+	episodeController := controllers.NewEpisodeController()
 	{
 		// Public routes
 		anime.GET("", animeController.GetAll)
 		anime.GET("/latest", animeController.GetLatest)
 		anime.GET("/top-rated", animeController.GetTopRated)
+		
+		// Episode routes (must come before /:slug to match properly)
+		anime.GET("/:slug/episodes", episodeController.GetByAnime)
+		anime.GET("/:slug/episodes/:number", episodeController.GetByAnimeAndNumber)
+		
+		// Dynamic anime route (must be last)
 		anime.GET("/:slug", animeController.GetBySlug)
 
 		// Admin routes
@@ -61,8 +68,6 @@ func setupEpisodeRoutes(api *gin.RouterGroup) {
 	episodeController := controllers.NewEpisodeController()
 
 	// Public routes
-	api.GET("/animes/:slug/episodes", episodeController.GetByAnime)
-	api.GET("/animes/:slug/episodes/:number", episodeController.GetByAnimeAndNumber)
 	api.GET("/episodes/latest", episodeController.GetLatest)
 	api.GET("/episodes/:id", episodeController.GetByID)
 
