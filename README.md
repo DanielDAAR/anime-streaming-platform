@@ -286,4 +286,4 @@ Este proyecto es de uso académico. Desarrollado como proyecto integrador univer
 
 ---
 
-**Desarrollado con ❤️ para fines educativos** quita los emojis y dejalo como un desarrollador de dsw daniel de softworks arquitecto senior
+**Desarrollado con ❤️ para fines educativos**
