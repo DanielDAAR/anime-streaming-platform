@@ -28,7 +28,7 @@ AnimeStream es una plataforma web administrativa para la gestión y distribució
 - Panel administrativo completo
 - SEO optimizado con SSR híbrido
 
-## 🛠 Stack Tecnológico
+## Stack Tecnológico
 
 ### Frontend
 - **Astro** - Framework web con SSR híbrido
