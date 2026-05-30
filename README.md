@@ -1,14 +1,15 @@
-# 🎬 AnimeStream - Plataforma de Streaming de Anime
+```markdown
+# AnimeStream - Plataforma de Streaming de Anime
 
-Proyecto integrador académico-profesional desarrollado con arquitectura MVC desacoplada, SSR híbrido y API REST.
+Proyecto integrador academico-profesional desarrollado con arquitectura MVC desacoplada, SSR hibrido y API REST.
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
-- [Descripción](#descripción)
-- [Stack Tecnológico](#stack-tecnológico)
+- [Descripcion](#descripcion)
+- [Stack Tecnologico](#stack-tecnologico)
 - [Arquitectura](#arquitectura)
-- [Instalación](#instalación)
-- [Configuración](#configuración)
+- [Instalacion](#instalacion)
+- [Configuracion](#configuracion)
 - [Uso](#uso)
 - [API Endpoints](#api-endpoints)
 - [Estructura del Proyecto](#estructura-del-proyecto)
@@ -16,38 +17,38 @@ Proyecto integrador académico-profesional desarrollado con arquitectura MVC des
 - [Seguridad](#seguridad)
 - [Licencia](#licencia)
 
-## 📝 Descripción
+## Descripcion
 
-AnimeStream es una plataforma web administrativa para la gestión y distribución de contenido multimedia tipo streaming mediante enlaces embebidos. El sistema permite:
+AnimeStream es una plataforma web administrativa para la gestion y distribucion de contenido multimedia tipo streaming mediante enlaces embebidos. El sistema permite:
 
 - Administrar animes y episodios
 - Gestionar usuarios con roles
 - Manejar comentarios con likes y respuestas
-- Autenticación JWT
-- Búsqueda con índices de texto MongoDB
+- Autenticacion JWT
+- Busqueda con indices de texto MongoDB
 - Panel administrativo completo
-- SEO optimizado con SSR híbrido
+- SEO optimizado con SSR hibrido
 
-## 🛠 Stack Tecnológico
+## Stack Tecnologico
 
 ### Frontend
-- **Astro** - Framework web con SSR híbrido
-- **TypeScript** - Tipado estático
+- **Astro** - Framework web con SSR hibrido
+- **TypeScript** - Tipado estatico
 - **Bulma CSS** - Framework CSS
 
 ### Backend
-- **Go** - Lenguaje de programación
+- **Go** - Lenguaje de programacion
 - **Gin Framework** - Web framework
-- **MongoDB Driver** - Conexión a base de datos
+- **MongoDB Driver** - Conexion a base de datos
 
 ### Base de Datos
 - **MongoDB** - Base de datos NoSQL
 
-### Autenticación
+### Autenticacion
 - **JWT** - JSON Web Tokens
-- **bcrypt** - Hash de contraseñas
+- **bcrypt** - Hash de contrasenas
 
-## 🏗 Arquitectura
+## Arquitectura
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -57,17 +58,17 @@ AnimeStream es una plataforma web administrativa para la gestión y distribució
 └─────────────────┘     └─────────────────┘     └─────────────────┘
         │                       │                       │
         └────── MVC Desacoplado ┘                       │
-                Separación por Capas                    │
+                Separacion por Capas                    │
                 Servicios & Repositorios                │
 ```
 
 ### Patrones utilizados:
-- **MVC Desacoplado**: Separación clara de responsabilidades
-- **Repository Pattern**: Abstracción de acceso a datos
-- **Service Layer**: Lógica de negocio independiente
-- **Middleware**: Autenticación, CORS, seguridad
+- **MVC Desacoplado**: Separacion clara de responsabilidades
+- **Repository Pattern**: Abstraccion de acceso a datos
+- **Service Layer**: Logica de negocio independiente
+- **Middleware**: Autenticacion, CORS, seguridad
 
-## 🚀 Instalación
+## Instalacion
 
 ### Prerrequisitos
 - Go 1.21+
@@ -102,13 +103,13 @@ cd frontend
 # Instalar dependencias
 npm install
 
-# Compilar para producción
+# Compilar para produccion
 npm run build
 ```
 
 ### 4. Configurar Base de Datos
 ```bash
-# Asegurar que MongoDB esté corriendo
+# Asegurar que MongoDB este corriendo
 mongod --dbpath /path/to/data
 
 # Ejecutar seeders
@@ -117,7 +118,7 @@ npm install bcryptjs mongodb
 node seed.js
 ```
 
-## ⚙ Configuración
+## Configuracion
 
 ### Variables de Entorno Backend (.env)
 ```env
@@ -142,7 +143,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:4321,http://localhost:8080
 PUBLIC_API_URL=http://localhost:8080/api
 ```
 
-## ▶ Uso
+## Uso
 
 ### Desarrollo
 ```bash
@@ -155,7 +156,7 @@ cd frontend
 npm run dev
 ```
 
-### Producción
+### Produccion
 ```bash
 # Backend
 cd backend
@@ -176,28 +177,28 @@ node ./dist/server/entry.mjs
 - **Admin**: admin@animestream.com / admin123
 - **Usuario**: user@animestream.com / user123
 
-## 🔌 API Endpoints
+## API Endpoints
 
-### Autenticación
-| Método | Endpoint | Descripción |
+### Autenticacion
+| Metodo | Endpoint | Descripcion |
 |--------|----------|-------------|
 | POST | /api/auth/register | Registrar usuario |
-| POST | /api/auth/login | Iniciar sesión |
+| POST | /api/auth/login | Iniciar sesion |
 | GET | /api/auth/me | Obtener usuario actual |
 
 ### Animes
-| Método | Endpoint | Descripción |
+| Metodo | Endpoint | Descripcion |
 |--------|----------|-------------|
 | GET | /api/animes | Listar animes (paginado) |
 | GET | /api/animes/:slug | Obtener anime por slug |
 | POST | /api/animes | Crear anime (admin) |
 | PUT | /api/animes/:id | Actualizar anime (admin) |
 | DELETE | /api/animes/:id | Eliminar anime (admin) |
-| GET | /api/animes/latest | Últimos animes |
+| GET | /api/animes/latest | Ultimos animes |
 | GET | /api/animes/top-rated | Mejor valorados |
 
 ### Episodios
-| Método | Endpoint | Descripción |
+| Metodo | Endpoint | Descripcion |
 |--------|----------|-------------|
 | GET | /api/animes/:id/episodes | Episodios por anime |
 | GET | /api/episodes/:id | Obtener episodio |
@@ -206,84 +207,85 @@ node ./dist/server/entry.mjs
 | DELETE | /api/episodes/:id | Eliminar episodio (admin) |
 
 ### Comentarios
-| Método | Endpoint | Descripción |
+| Metodo | Endpoint | Descripcion |
 |--------|----------|-------------|
 | GET | /api/comments/:animeId | Comentarios por anime |
 | POST | /api/comments | Crear comentario |
 | POST | /api/comments/:id/reply | Responder comentario |
 | POST | /api/comments/:id/like | Dar like |
-| GET | /api/comments | Moderación (admin) |
+| GET | /api/comments | Moderacion (admin) |
 | DELETE | /api/comments/:id | Eliminar (admin) |
 
 ### Usuarios
-| Método | Endpoint | Descripción |
+| Metodo | Endpoint | Descripcion |
 |--------|----------|-------------|
 | GET | /api/users | Listar usuarios (admin) |
 | GET | /api/users/:id | Obtener usuario (admin) |
 | PUT | /api/users/:id/role | Cambiar rol (admin) |
 | PUT | /api/users/:id/toggle-active | Activar/Desactivar (admin) |
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 anime-streaming-platform/
 ├── backend/
 │   ├── controllers/      # Controladores HTTP
-│   ├── services/         # Lógica de negocio
+│   ├── services/         # Logica de negocio
 │   ├── repositories/     # Acceso a datos
 │   ├── models/           # Modelos de datos
-│   ├── routes/           # Definición de rutas
+│   ├── routes/           # Definicion de rutas
 │   ├── middleware/       # Middlewares
-│   ├── config/           # Configuración
+│   ├── config/           # Configuracion
 │   ├── utils/            # Utilidades
 │   ├── validators/       # Validaciones
 │   └── main.go           # Punto de entrada
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/        # Páginas Astro
+│   │   ├── pages/        # Paginas Astro
 │   │   ├── layouts/      # Layouts
 │   │   ├── components/   # Componentes
 │   │   ├── services/     # Servicios API
 │   │   ├── styles/       # Estilos SCSS
 │   │   ├── middleware/   # Middlewares
 │   │   └── types/        # Tipos TypeScript
-│   ├── public/           # Archivos estáticos
+│   ├── public/           # Archivos estaticos
 │   └── astro.config.mjs  # Config Astro
 ├── database/
 │   ├── migrations/       # Migraciones
 │   └── seeders/          # Datos iniciales
-└── docs/                 # Documentación
+└── docs/                 # Documentacion
 ```
 
-## 🗄 Base de Datos
+## Base de Datos
 
 ### Colecciones
-1. **animes** - Información de series
+1. **animes** - Informacion de series
 2. **episodes** - Episodios con servidores embebidos
-3. **users** - Usuarios y autenticación
+3. **users** - Usuarios y autenticacion
 4. **comments** - Comentarios y respuestas
-5. **history** - Historial de visualización
+5. **history** - Historial de visualizacion
 
-### Índices
-- Animes: slug (único), texto (title, description, genres), rating, createdAt
+### Indices
+- Animes: slug (unico), texto (title, description, genres), rating, createdAt
 - Episodes: animeId + number, createdAt
-- Users: email (único), username (único), role
+- Users: email (unico), username (unico), role
 - Comments: animeId + createdAt, userId, parentId
-- History: userId + animeId (único), updatedAt
+- History: userId + animeId (unico), updatedAt
 
-## 🔒 Seguridad
+## Seguridad
 
-- **bcrypt**: Hash de contraseñas con salt automático
-- **JWT**: Tokens con expiración configurable
-- **CORS**: Orígenes permitidos configurables
+- **bcrypt**: Hash de contrasenas con salt automatico
+- **JWT**: Tokens con expiracion configurable
+- **CORS**: Origenes permitidos configurables
 - **Headers de seguridad**: X-Content-Type-Options, X-Frame-Options, etc.
-- **Validación**: Sanitización de inputs en todos los endpoints
-- **Middleware**: Separación de roles (user/admin)
+- **Validacion**: Sanitizacion de inputs en todos los endpoints
+- **Middleware**: Separacion de roles (user/admin)
 
-## 📄 Licencia
+## Licencia
 
-Este proyecto es de uso académico. Desarrollado como proyecto integrador universitario.
+Este proyecto es de uso academico. Desarrollado como proyecto integrador universitario.
 
 ---
 
-**Desarrollado con ❤️ para fines educativos**
+Desarrollado para fines educativos por DCSW - Daniel and Cesar Softworks
+```
